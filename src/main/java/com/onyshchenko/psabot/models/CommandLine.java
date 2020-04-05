@@ -19,15 +19,31 @@ public class CommandLine {
         return cmd;
     }
 
+    public void setCmd(Commands cmd) {
+        this.cmd = cmd;
+    }
 
     public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getCurPage() {
         return curPage;
     }
 
+    public void setCurPage(int curPage) {
+        this.curPage = curPage;
+    }
 
+    public void setPrevPage(int prevPage) {
+        this.prevPage = prevPage;
+    }
+    
+    public void setNextPage(int nextPage) {
+        this.nextPage = nextPage;
+    }
 }
