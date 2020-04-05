@@ -108,7 +108,7 @@ public class HtmlService {
         logger.info("Scheduled call");
 
         String https_url = "https://ps-analyzer.herokuapp.com/";
-        String https_url_bot = "https://psa-bot.herokuapp.com/";
+        String https_url_bot = "https://ps-analyzer-bot.herokuapp.com/";
         URL url;
         URL url_self;
         try {
