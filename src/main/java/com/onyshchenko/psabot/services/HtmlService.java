@@ -105,19 +105,26 @@ public class HtmlService {
     @Scheduled(fixedDelay = 600000)
     public void scheduledCall() {
 
-        logger.info("Scheduled call");
-
         String https_url = "https://ps-analyzer.herokuapp.com/";
         String https_url_bot = "https://ps-analyzer-bot.herokuapp.com/";
-        URL url;
-        URL url_self;
         try {
-            url = new URL(https_url);
+            logger.info("Scheduled call of PSA");
+            URL url = new URL(https_url);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-            url_self = new URL(https_url_bot);
-            HttpsURLConnection con_self = (HttpsURLConnection) url_self.openConnection();
+            con.setRequestMethod("OPTIONS");
+            con.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Exception during PSA ping.");
         }
+        try {
+            logger.info("Scheduled call of PSA-bot");
+            URL url_self = new URL(https_url_bot);
+            HttpsURLConnection con_self = (HttpsURLConnection) url_self.openConnection();
+            con_self.setRequestMethod("GET");
+            con_self.connect();
+        } catch (IOException e) {
+            logger.info("Exception during PSA-bot ping.");
+        }
+
     }
 }
