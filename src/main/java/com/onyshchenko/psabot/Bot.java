@@ -129,6 +129,11 @@ public class Bot extends TelegramLongPollingBot {
                 textForResponse = htmlService.addToWishList(addToWishListUrl);
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId);
                 break;
+            case CLEARWL:
+                String clearWishListUrl = "users/" + command.getId();
+                textForResponse = htmlService.deleteFromWishList(clearWishListUrl);
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId);
+                break;
             default:
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId);
         }

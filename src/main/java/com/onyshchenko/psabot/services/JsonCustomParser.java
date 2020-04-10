@@ -28,7 +28,7 @@ public class JsonCustomParser {
 
         sb.append("List of games:\n");
         for (int i = 0; i < totalObjects; i++) {
-            sb.append(i).append(1).append(") ");
+            sb.append(i + 1).append(") ");
             JSONObject game = gameList.getJSONObject(i);
             String name = game.getString("name");
             sb.append(name).append("\nPrice: ");

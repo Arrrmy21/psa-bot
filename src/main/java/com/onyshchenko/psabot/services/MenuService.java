@@ -66,7 +66,7 @@ public class MenuService {
 
         sb.append("List of games:\n");
         for (int i = 0; i < totalObjects; i++) {
-            sb.append(i).append(1).append(") ");
+            sb.append(i + 1).append(") ");
             JSONObject game = gameList.getJSONObject(i);
             String name = game.getString("name");
             String id = game.getString("id");
@@ -115,10 +115,17 @@ public class MenuService {
 
         row4.add(new InlineKeyboardButton().setText("Back to menu").setCallbackData(greetings));
 
+
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
         keyboard.add(row4);
+        if (command.equals(Commands.GETWL)) {
+            List<InlineKeyboardButton> row5 = new ArrayList<>();
+            String clearWl = String.format(get_id_format, Commands.CLEARWL, userId + "/" + "all");
+            row5.add(new InlineKeyboardButton().setText("Clear wish list").setCallbackData(clearWl));
+            keyboard.add(row5);
+        }
         keyboardMarkup.setKeyboard(keyboard);
 
         return keyboardMarkup;
@@ -138,16 +145,21 @@ public class MenuService {
 
         List<InlineKeyboardButton> row2 = new ArrayList<>();
 
-        String addToWithListText = String.format(get_id_format, "ADDTOWISHLIST", userId + "/" + gameId);
-        row2.add(new InlineKeyboardButton().setText("Add to wishlist")
+        String addToWithListText = String.format(get_id_format, Commands.ADDTOWISHLIST, userId + "/" + gameId);
+        row2.add(new InlineKeyboardButton().setText("Add to wishList")
                 .setCallbackData(addToWithListText));
+        String deleteFromWithListText = String.format(get_id_format, Commands.CLEARWL, userId + "/" + gameId);
+        row2.add(new InlineKeyboardButton().setText("Delete from wishList")
+                .setCallbackData(deleteFromWithListText));
 
-        row2.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData("Main menu"));
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
+        row3.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData("Main menu"));
 
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);
         keyboard.add(row2);
+        keyboard.add(row3);
         keyboardMarkup.setKeyboard(keyboard);
 
         return keyboardMarkup;

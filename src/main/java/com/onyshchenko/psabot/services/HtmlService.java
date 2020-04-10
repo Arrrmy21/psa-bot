@@ -102,6 +102,30 @@ public class HtmlService {
         return response.toString();
     }
 
+    public String deleteFromWishList(String stringUrl) {
+
+        StringBuilder response = new StringBuilder();
+        try {
+            URL url = new URL(APP_URL + stringUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("DELETE");
+            con.addRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response.toString();
+    }
+
     @Scheduled(fixedDelay = 600000)
     public void scheduledCall() {
 

@@ -8,6 +8,7 @@ public enum Commands {
     GREETINGS("hello"),
     ADDTOWISHLIST("addToWishList"),
     GETWL("getWishList"),
+    CLEARWL("clearWishList"),
     REGULARREPLY("regularReply");
 
     public String commandName;
