@@ -15,7 +15,7 @@ public class MenuService {
 
     public String get_list_format = "{\"cmd\":\"%s\",\"curPage\":\"%d\","
             + "\"prevPage\":\"%d\"}";
-    public String get_wishList_format = "{\"cmd\":\"%s\",\"id\":\"%s\",\"curPage\":\"%d\","
+    public String get_list_with_id_format = "{\"cmd\":\"%s\",\"id\":\"%s\",\"curPage\":\"%d\","
             + "\"prevPage\":\"%d\"}";
     public String get_id_format = "{\"cmd\":\"%s\",\"id\":\"%s\"}";
     public String menu_format = "{\"cmd\":\"%s\"}";
@@ -41,7 +41,7 @@ public class MenuService {
         return keyboardMarkup;
     }
 
-    public InlineKeyboardMarkup getListMenu(JSONObject responseJson, Commands command, int currentPage, int userId) {
+    public InlineKeyboardMarkup getListMenu(JSONObject responseJson, Commands command, int currentPage, Object id) {
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
 
@@ -69,7 +69,7 @@ public class MenuService {
             sb.append(i + 1).append(") ");
             JSONObject game = gameList.getJSONObject(i);
             String name = game.getString("name");
-            String id = game.getString("id");
+            String gameId = game.getString("id");
             sb.append(name).append("\nPrice: ");
             JSONObject price = (JSONObject) game.get("price");
             int currentPrice = (int) price.get("currentPrice");
@@ -77,7 +77,7 @@ public class MenuService {
             int currentDiscount = (int) price.get("currentDiscount");
             sb.append(currentDiscount).append("\n\n");
 
-            String callBack = String.format(get_id_format, "GETGAME", id);
+            String callBack = String.format(get_id_format, "GETGAME", gameId);
             if (i < 5) {
                 row1.add(new InlineKeyboardButton().setText(String.valueOf(i + 1)).setCallbackData(callBack));
             } else {
@@ -92,9 +92,8 @@ public class MenuService {
                 case GETGAMES:
                     prevPageString = String.format(get_list_format, command, prevPage, currentPage);
                     break;
-                case GETWL:
-                    prevPageString = String.format(get_wishList_format, command, userId, prevPage, currentPage);
-                    break;
+                default:
+                    prevPageString = String.format(get_list_with_id_format, command, id, prevPage, currentPage);
             }
             row3.add(new InlineKeyboardButton().setText("Previous page").setCallbackData(prevPageString));
         }
@@ -106,9 +105,8 @@ public class MenuService {
                 case GETGAMES:
                     nextPageString = String.format(get_list_format, command, nextPage, currentPage);
                     break;
-                case GETWL:
-                    nextPageString = String.format(get_wishList_format, command, userId, nextPage, currentPage);
-                    break;
+                default:
+                    nextPageString = String.format(get_list_with_id_format, command, id, nextPage, currentPage);
             }
             row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageString));
         }
@@ -122,7 +120,7 @@ public class MenuService {
         keyboard.add(row4);
         if (command.equals(Commands.GETWL)) {
             List<InlineKeyboardButton> row5 = new ArrayList<>();
-            String clearWl = String.format(get_id_format, Commands.CLEARWL, userId + "/" + "all");
+            String clearWl = String.format(get_id_format, Commands.CLEARWL, id + "/" + "all");
             row5.add(new InlineKeyboardButton().setText("Clear wish list").setCallbackData(clearWl));
             keyboard.add(row5);
         }

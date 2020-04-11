@@ -9,6 +9,7 @@ public enum Commands {
     ADDTOWISHLIST("addToWishList"),
     GETWL("getWishList"),
     CLEARWL("clearWishList"),
+    SEARCH("searchGame"),
     REGULARREPLY("regularReply");
 
     public String commandName;

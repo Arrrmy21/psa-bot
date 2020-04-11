@@ -67,7 +67,8 @@ public class Bot extends TelegramLongPollingBot {
         String textForResponse = "Default reply";
         command = commandService.prepareCommandFromRequest(requestData);
 
-        if (command.getCmd().equals(Commands.GETGAME) || command.getCmd().equals(Commands.REGISTERUSER)) {
+        if (command.getCmd().equals(Commands.GETGAME) || command.getCmd().equals(Commands.REGISTERUSER)
+                || command.getCmd().equals(Commands.SEARCH)) {
             responseMessage = new SendMessage();
             responseMessage.setChatId(chatId);
         } else {
@@ -133,6 +134,16 @@ public class Bot extends TelegramLongPollingBot {
                 String clearWishListUrl = "users/" + command.getId();
                 textForResponse = htmlService.deleteFromWishList(clearWishListUrl);
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId);
+                break;
+            case SEARCH:
+                StringBuilder searchByName = new StringBuilder();
+                searchByName.append("games?");
+                searchByName.append("page=").append(command.getCurPage());
+                searchByName.append("&filter=").append("name=").append(command.getId());
+
+                JSONObject getGameByNameJson = htmlService.getJsonFromURL(searchByName.toString());
+                textForResponse = JsonCustomParser.getListResponse(getGameByNameJson);
+                keyboardForResponse = menuService.getListMenu(getGameByNameJson, Commands.SEARCH, command.getCurPage(), command.getId());
                 break;
             default:
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId);

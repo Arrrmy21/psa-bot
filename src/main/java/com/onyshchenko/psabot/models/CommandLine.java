@@ -15,6 +15,11 @@ public class CommandLine {
         this.cmd = cmd;
     }
 
+    public CommandLine(Commands cmd, String id) {
+        this.cmd = cmd;
+        this.id = id;
+    }
+
     public Commands getCmd() {
         return cmd;
     }
@@ -42,7 +47,7 @@ public class CommandLine {
     public void setPrevPage(int prevPage) {
         this.prevPage = prevPage;
     }
-    
+
     public void setNextPage(int nextPage) {
         this.nextPage = nextPage;
     }
