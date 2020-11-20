@@ -5,10 +5,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,20 +16,34 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
+@PropertySource("classpath:bot.properties")
 public class HtmlService {
 
-    private Logger logger = LoggerFactory.getLogger(HtmlService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlService.class);
 
-    private static final String APP_URL = "https://ps-analyzer.herokuapp.com/";
+    @Value("${bot.main.service.url}")
+    private String APP_URL;
+
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APP_PROPERTY = "application/json; utf-8";
+    private static final String ACCEPT = "Accept";
+    private static final String APP_JSON = "application/json";
+
+    private Map<String, String> userTokens = new HashMap<>();
 
 
-    public JSONObject getJsonFromURL(String urlName) {
+    public JSONObject getJsonFromURL(String urlName, String username) {
 
         try {
             URL url = new URL(APP_URL + urlName);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            fillRequestWithToken(con, username);
+
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             con.getInputStream()));
@@ -54,9 +68,10 @@ public class HtmlService {
             URL url = new URL(APP_URL + "users/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
-            con.addRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
+            con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
+            con.setRequestProperty(ACCEPT, APP_JSON);
             con.setDoOutput(true);
+
 
             JSONObject jsonUser = new JSONObject(user);
             String request = jsonUser.toString();
@@ -78,16 +93,18 @@ public class HtmlService {
         return response.toString();
     }
 
-    public String addToWishList(String stringUrl) {
+    public String addToWishList(String stringUrl, String username) {
 
         StringBuilder response = new StringBuilder();
         try {
             URL url = new URL(APP_URL + stringUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("PUT");
-            con.addRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
+            con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
+            con.setRequestProperty(ACCEPT, APP_JSON);
             con.setDoOutput(true);
+
+            fillRequestWithToken(con, username);
 
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
@@ -102,16 +119,18 @@ public class HtmlService {
         return response.toString();
     }
 
-    public String deleteFromWishList(String stringUrl) {
+    public String deleteFromWishList(String stringUrl, String username) {
 
         StringBuilder response = new StringBuilder();
         try {
             URL url = new URL(APP_URL + stringUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("DELETE");
-            con.addRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
+            con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
+            con.setRequestProperty(ACCEPT, APP_JSON);
             con.setDoOutput(true);
+
+            fillRequestWithToken(con, username);
 
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
@@ -126,29 +145,49 @@ public class HtmlService {
         return response.toString();
     }
 
-    @Scheduled(fixedDelay = 600000)
-    public void scheduledCall() {
+    public void getTokenFromService(String username) {
 
-        String https_url = "https://ps-analyzer.herokuapp.com/";
-        String https_url_bot = "https://ps-analyzer-bot.herokuapp.com/";
+        String authPath = "auth/login";
+        StringBuilder response = new StringBuilder();
         try {
-            logger.info("Scheduled call of PSA");
-            URL url = new URL(https_url);
-            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-            con.setRequestMethod("OPTIONS");
-            con.connect();
+            URL url = new URL(APP_URL + authPath);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
+            con.setRequestProperty(ACCEPT, APP_JSON);
+            con.setDoOutput(true);
+
+            String request = "{ \"username\": \"" + username + "\"}";
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = request.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            }
+
         } catch (IOException e) {
-            logger.info("Exception during PSA ping.");
-        }
-        try {
-            logger.info("Scheduled call of PSA-bot");
-            URL url_self = new URL(https_url_bot);
-            HttpsURLConnection con_self = (HttpsURLConnection) url_self.openConnection();
-            con_self.setRequestMethod("GET");
-            con_self.connect();
-        } catch (IOException e) {
-            logger.info("Exception during PSA-bot ping.");
+            e.printStackTrace();
         }
 
+        String token = response.toString();
+        JSONObject jsonObject = new JSONObject(token);
+        String tokenString = String.valueOf(jsonObject.get("token"));
+        if (!token.isEmpty()) {
+            LOGGER.info("Saving token for user");
+            userTokens.put(username, tokenString);
+        }
+    }
+
+    private void fillRequestWithToken(HttpURLConnection connection, String username) {
+        String token = userTokens.get(username);
+        if (token == null || token.isEmpty()) {
+            getTokenFromService(username);
+        }
+        connection.addRequestProperty("Authorization", "Bearer_" + token);
     }
 }

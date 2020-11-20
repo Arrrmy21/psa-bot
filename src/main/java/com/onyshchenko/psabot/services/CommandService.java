@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class CommandService {
 
-    private Logger logger = LoggerFactory.getLogger(CommandService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandService.class);
 
     public CommandLine prepareCommandFromRequest(String data) {
 
@@ -28,7 +28,7 @@ public class CommandService {
             try {
                 encodedUrl = URLEncoder.encode(nameOfGame, StandardCharsets.UTF_8.toString());
             } catch (UnsupportedEncodingException e) {
-                logger.info("Failed to encode name for filter");
+                LOGGER.info("Failed to encode name for filter");
             }
 
             return new CommandLine(Commands.SEARCH, encodedUrl);

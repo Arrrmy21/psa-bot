@@ -13,26 +13,42 @@ import java.util.List;
 @Component
 public class MenuService {
 
-    public String get_list_format = "{\"cmd\":\"%s\",\"curPage\":\"%d\","
+    private static final String GET_LIST_FORMAT = "{\"cmd\":\"%s\",\"curPage\":\"%d\","
             + "\"prevPage\":\"%d\"}";
-    public String get_list_with_id_format = "{\"cmd\":\"%s\",\"id\":\"%s\",\"curPage\":\"%d\","
+    private static final String GET_LIST_STRING_FORMAT = "{\"cmd\":\"%s\",\"curPage\":\"%s\","
+            + "\"prevPage\":\"%s\"}";
+    private static final String GET_LIST_WITH_ID_FORMAT = "{\"cmd\":\"%s\",\"id\":\"%s\",\"curPage\":\"%d\","
             + "\"prevPage\":\"%d\"}";
-    public String get_id_format = "{\"cmd\":\"%s\",\"id\":\"%s\"}";
-    public String menu_format = "{\"cmd\":\"%s\"}";
-    String greetings = String.format(menu_format, "GREETINGS");
+    private static final String GET_ID_FORMAT = "{\"cmd\":\"%s\",\"id\":\"%s\"}";
+    private static final String CMD_PLUS_RETURN = "{\"cmd\":\"%s\",\"id\":\"%s\",\"add\":\"%s\"}";
+    private static final String MENU_FORMAT = "{\"cmd\":\"%s\"}";
 
-    public InlineKeyboardMarkup getMainMenuInlineKeyboard(int userId) {
+    private static final String GREETINGS = String.format(MENU_FORMAT, "GREETINGS");
+    private static final String GET_GAMES = "GETGAMES";
+    private static final String GET_WISHLIST = "GETWL";
+
+    public InlineKeyboardMarkup getMainMenuInlineKeyboard(int userId, String previousPageData) {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
 
-        String callBack = String.format(get_list_format, "GETGAMES", 0, 0);
-        String wishList = String.format(get_id_format, "GETWL", userId);
+        String callBack = String.format(GET_LIST_FORMAT, GET_GAMES, 0, 0);
+        String wishList = String.format(GET_ID_FORMAT, GET_WISHLIST, userId);
 
         row1.add(new InlineKeyboardButton().setText("Get list of games").setCallbackData(callBack));
         row1.add(new InlineKeyboardButton().setText("My wishList").setCallbackData(wishList));
-        row2.add(new InlineKeyboardButton().setText("Hello").setCallbackData(greetings));
+
+        if (previousPageData != null) {
+            String[] previousPageDataList = previousPageData.split("-");
+            String previousPage = null;
+            if (previousPageDataList[0].equalsIgnoreCase("GG")) {
+                previousPage = String.format(GET_LIST_STRING_FORMAT, GET_GAMES, previousPageDataList[1], previousPageDataList[1]);
+            } else {
+                previousPage = String.format(CMD_PLUS_RETURN, GET_WISHLIST, userId, previousPageDataList[1]);
+            }
+            row2.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
+        }
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);
@@ -77,7 +93,13 @@ public class MenuService {
             int currentDiscount = (int) price.get("currentDiscount");
             sb.append(currentDiscount).append("\n\n");
 
-            String callBack = String.format(get_id_format, "GETGAME", gameId);
+            String current;
+            if (command.equals(Commands.GETGAMES)) {
+                current = "GG-" + currentPage;
+            } else {
+                current = "WL-" + currentPage;
+            }
+            String callBack = String.format(CMD_PLUS_RETURN, "GETGAME", gameId, current);
             if (i < 5) {
                 row1.add(new InlineKeyboardButton().setText(String.valueOf(i + 1)).setCallbackData(callBack));
             } else {
@@ -90,10 +112,10 @@ public class MenuService {
             String prevPageString = null;
             switch (command) {
                 case GETGAMES:
-                    prevPageString = String.format(get_list_format, command, prevPage, currentPage);
+                    prevPageString = String.format(GET_LIST_FORMAT, command, prevPage, currentPage);
                     break;
                 default:
-                    prevPageString = String.format(get_list_with_id_format, command, id, prevPage, currentPage);
+                    prevPageString = String.format(GET_LIST_WITH_ID_FORMAT, command, id, prevPage, currentPage);
             }
             row3.add(new InlineKeyboardButton().setText("Previous page").setCallbackData(prevPageString));
         }
@@ -103,16 +125,15 @@ public class MenuService {
             String nextPageString = null;
             switch (command) {
                 case GETGAMES:
-                    nextPageString = String.format(get_list_format, command, nextPage, currentPage);
+                    nextPageString = String.format(GET_LIST_FORMAT, command, nextPage, currentPage);
                     break;
                 default:
-                    nextPageString = String.format(get_list_with_id_format, command, id, nextPage, currentPage);
+                    nextPageString = String.format(GET_LIST_WITH_ID_FORMAT, command, id, nextPage, currentPage);
             }
             row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageString));
         }
 
-        row4.add(new InlineKeyboardButton().setText("Back to menu").setCallbackData(greetings));
-
+        row4.add(new InlineKeyboardButton().setText("Back to menu").setCallbackData(GREETINGS));
 
         keyboard.add(row1);
         keyboard.add(row2);
@@ -120,7 +141,7 @@ public class MenuService {
         keyboard.add(row4);
         if (command.equals(Commands.GETWL)) {
             List<InlineKeyboardButton> row5 = new ArrayList<>();
-            String clearWl = String.format(get_id_format, Commands.CLEARWL, id + "/" + "all");
+            String clearWl = String.format(GET_ID_FORMAT, Commands.CLEARWL, id + "/" + "all");
             row5.add(new InlineKeyboardButton().setText("Clear wish list").setCallbackData(clearWl));
             keyboard.add(row5);
         }
@@ -129,7 +150,7 @@ public class MenuService {
         return keyboardMarkup;
     }
 
-    public InlineKeyboardMarkup getGameMenu(JSONObject responseJson, int userId) {
+    public InlineKeyboardMarkup getGameMenu(JSONObject responseJson, int userId, String previousPageData) {
         String baseUrl = "https://store.playstation.com/ru-ua/product/";
 
         String url = responseJson.getString("url");
@@ -143,16 +164,26 @@ public class MenuService {
 
         List<InlineKeyboardButton> row2 = new ArrayList<>();
 
-        String addToWithListText = String.format(get_id_format, Commands.ADDTOWISHLIST, userId + "/" + gameId);
+        String addToWithListText = String.format(CMD_PLUS_RETURN, Commands.ADDTOWL, userId + "/" + gameId, previousPageData);
         row2.add(new InlineKeyboardButton().setText("Add to wishList")
                 .setCallbackData(addToWithListText));
-        String deleteFromWithListText = String.format(get_id_format, Commands.CLEARWL, userId + "/" + gameId);
+        String deleteFromWithListText = String.format(CMD_PLUS_RETURN, Commands.CLEARWL, userId + "/" + gameId, previousPageData);
         row2.add(new InlineKeyboardButton().setText("Delete from wishList")
                 .setCallbackData(deleteFromWithListText));
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         row3.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData("Main menu"));
 
+        if (previousPageData != null) {
+            String[] previousPageDataList = previousPageData.split("-");
+            String previousPage = null;
+            if (previousPageDataList[0].equalsIgnoreCase("GG")) {
+                previousPage = String.format(GET_LIST_STRING_FORMAT, GET_GAMES, previousPageDataList[1], previousPageDataList[1]);
+            } else {
+                previousPage = String.format(CMD_PLUS_RETURN, GET_WISHLIST, userId, previousPageDataList[1]);
+            }
+            row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
+        }
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);

@@ -6,13 +6,13 @@ public enum Commands {
     GETGAME("getGame"),
     REGISTERUSER("registerUser"),
     GREETINGS("hello"),
-    ADDTOWISHLIST("addToWishList"),
+    ADDTOWL("addToWishList"),
     GETWL("getWishList"),
     CLEARWL("clearWishList"),
     SEARCH("searchGame"),
     REGULARREPLY("regularReply");
 
-    public String commandName;
+    private String commandName;
 
     Commands(String commandName) {
         this.commandName = commandName;

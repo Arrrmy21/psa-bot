@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsonCustomParser {
 
+    private JsonCustomParser() {
+    }
+
     public static String getGameResponse(JSONObject jsonObject) {
 
         String name = jsonObject.getString("name");
@@ -26,7 +29,7 @@ public class JsonCustomParser {
         JSONArray gameList = jsonObject.getJSONArray("content");
         int totalObjects = gameList.length();
 
-        sb.append("List of games:\n");
+        sb.append(".!.                   List of games                   .!.\n");
         for (int i = 0; i < totalObjects; i++) {
             sb.append(i + 1).append(") ");
             JSONObject game = gameList.getJSONObject(i);

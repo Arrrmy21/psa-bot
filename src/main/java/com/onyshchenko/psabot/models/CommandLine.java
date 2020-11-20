@@ -1,5 +1,7 @@
 package com.onyshchenko.psabot.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CommandLine {
 
     private Commands cmd;
@@ -7,6 +9,8 @@ public class CommandLine {
     private int curPage;
     private int prevPage;
     private int nextPage;
+    @JsonProperty("add")
+    private String previousPageInfo;
 
     public CommandLine() {
     }
@@ -50,5 +54,13 @@ public class CommandLine {
 
     public void setNextPage(int nextPage) {
         this.nextPage = nextPage;
+    }
+
+    public String getPreviousPageInfo() {
+        return previousPageInfo;
+    }
+
+    public void setPreviousPageInfo(String previousPageInfo) {
+        this.previousPageInfo = previousPageInfo;
     }
 }
