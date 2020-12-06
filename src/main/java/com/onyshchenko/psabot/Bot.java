@@ -73,7 +73,7 @@ public class Bot extends TelegramLongPollingBot {
         command = commandService.prepareCommandFromRequest(requestData);
 
         if (command.getCmd().equals(Commands.REGISTERUSER)
-                || command.getCmd().equals(Commands.SEARCH)) {
+                || command.getCmd().equals(Commands.SEARCH) || command.getCmd().equals(Commands.GETWL)) {
             responseMessage = new SendMessage();
             responseMessage.setChatId(chatId);
         } else {
@@ -94,7 +94,7 @@ public class Bot extends TelegramLongPollingBot {
                 textForResponse = htmlService.registerUser(newUser);
                 if (textForResponse.equalsIgnoreCase("User created.")
                         || textForResponse.equalsIgnoreCase("User already exists.")) {
-                    LOGGER.info("User was successfully created.");
+                    LOGGER.info("User exists in database.");
                     takeTokenForUser(newUser.getUsername());
                 }
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
@@ -127,7 +127,8 @@ public class Bot extends TelegramLongPollingBot {
                 StringBuilder getWishListUrl = new StringBuilder();
                 getWishListUrl.append(GAMES);
                 getWishListUrl.append(PAGE).append(command.getCurPage());
-                getWishListUrl.append("&filter=").append("userId=").append(command.getId());
+
+                getWishListUrl.append("&filter=").append("userId=").append(userId);
 
                 JSONObject getWishListJson = htmlService.getJsonFromURL(getWishListUrl.toString(), userUniqueName);
                 textForResponse = JsonCustomParser.getListResponse(getWishListJson);

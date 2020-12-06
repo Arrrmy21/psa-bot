@@ -22,6 +22,8 @@ public class CommandService {
         CommandLine commandLine;
         if (data.equalsIgnoreCase("/start")) {
             return new CommandLine(Commands.REGISTERUSER);
+        } else if (data.equalsIgnoreCase("/wishlist")) {
+            return new CommandLine((Commands.GETWL));
         } else if (data.contains("Name: ") || data.contains("name: ")) {
             String nameOfGame = data.substring(6);
             String encodedUrl = null;

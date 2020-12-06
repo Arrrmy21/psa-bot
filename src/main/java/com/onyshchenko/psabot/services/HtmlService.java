@@ -26,7 +26,7 @@ public class HtmlService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HtmlService.class);
 
     @Value("${bot.main.service.url}")
-    private String APP_URL;
+    private String appUrl;
 
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APP_PROPERTY = "application/json; utf-8";
@@ -39,7 +39,7 @@ public class HtmlService {
     public JSONObject getJsonFromURL(String urlName, String username) {
 
         try {
-            URL url = new URL(APP_URL + urlName);
+            URL url = new URL(appUrl + urlName);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
             fillRequestWithToken(con, username);
@@ -65,7 +65,7 @@ public class HtmlService {
         StringBuilder response = new StringBuilder();
 
         try {
-            URL url = new URL(APP_URL + "users/");
+            URL url = new URL(appUrl + "users/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
@@ -97,7 +97,7 @@ public class HtmlService {
 
         StringBuilder response = new StringBuilder();
         try {
-            URL url = new URL(APP_URL + stringUrl);
+            URL url = new URL(appUrl + stringUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("PUT");
             con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
@@ -123,7 +123,7 @@ public class HtmlService {
 
         StringBuilder response = new StringBuilder();
         try {
-            URL url = new URL(APP_URL + stringUrl);
+            URL url = new URL(appUrl + stringUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("DELETE");
             con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
@@ -147,10 +147,11 @@ public class HtmlService {
 
     public void getTokenFromService(String username) {
 
+        LOGGER.info("Starting procedure of getting token");
         String authPath = "auth/login";
         StringBuilder response = new StringBuilder();
         try {
-            URL url = new URL(APP_URL + authPath);
+            URL url = new URL(appUrl + authPath);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.addRequestProperty(CONTENT_TYPE, APP_PROPERTY);
