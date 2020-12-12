@@ -185,6 +185,7 @@ public class HtmlService {
         String token = userTokens.get(username);
         if (token == null || token.isEmpty()) {
             getTokenFromService(username);
+            token = userTokens.get(username);
         }
         connection.addRequestProperty("Authorization", "Bearer_" + token);
     }
