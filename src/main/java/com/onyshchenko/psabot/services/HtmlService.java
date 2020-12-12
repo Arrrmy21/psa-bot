@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -20,12 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@PropertySource("classpath:bot.properties")
 public class HtmlService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HtmlService.class);
 
-    @Value("${bot.main.service.url}")
+    @Value("${bot.main.server.url}")
     private String appUrl;
 
     private static final String CONTENT_TYPE = "Content-Type";
@@ -55,7 +53,6 @@ public class HtmlService {
             in.close();
             return new JSONObject(response.toString());
         } catch (IOException e) {
-            e.printStackTrace();
             throw new JSONException("Failed to parse JSON");
         }
     }

@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -22,7 +21,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-@PropertySource("classpath:bot.properties")
 public class Bot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
@@ -30,13 +28,13 @@ public class Bot extends TelegramLongPollingBot {
     private static final String PAGE = "page=";
 
     @Autowired
-    private CommandService commandService = new CommandService();
+    private CommandService commandService;
 
     @Autowired
-    private HtmlService htmlService = new HtmlService();
+    private HtmlService htmlService;
 
     @Autowired
-    private MenuService menuService = new MenuService();
+    private MenuService menuService;
 
     @Value("${bot.token}")
     private String token;
