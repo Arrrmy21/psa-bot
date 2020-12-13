@@ -26,6 +26,8 @@ public class Bot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
     private static final String GAMES = "games?";
     private static final String PAGE = "page=";
+    private static final String TIP1 = "\nYou can search for games typing \"name: [name of game]\"";
+    private static final String TIP2 = "\nexample:\nname: Mafia";
 
     @Autowired
     private CommandService commandService;
@@ -71,7 +73,8 @@ public class Bot extends TelegramLongPollingBot {
         command = commandService.prepareCommandFromRequest(requestData);
 
         if (command.getCmd().equals(Commands.REGISTERUSER)
-                || command.getCmd().equals(Commands.SEARCH) || command.getCmd().equals(Commands.GETWL)) {
+                || command.getCmd().equals(Commands.SEARCH) || command.getCmd().equals(Commands.GETWL)
+                || command.getCmd().equals(Commands.GETGAME)) {
             responseMessage = new SendMessage();
             responseMessage.setChatId(chatId);
         } else {
@@ -94,14 +97,20 @@ public class Bot extends TelegramLongPollingBot {
                 newUser.setChatId(chatId);
 
                 String registerUserResponse = htmlService.registerUser(newUser);
+                StringBuilder textForResponseBuilder = new StringBuilder();
                 if (registerUserResponse.equalsIgnoreCase("User created.")) {
-                    textForResponse = "Welcome, " + newUser.getUsername() + ".";
+                    textForResponseBuilder.append("Welcome, ").append(newUser.getUsername()).append(".");
+                    textForResponseBuilder.append(TIP1).append(TIP2);
+                    textForResponse = textForResponseBuilder.toString();
                     takeTokenForUser(newUser.getUsername());
                 } else if (registerUserResponse.equalsIgnoreCase("User already exists.")) {
-                    textForResponse = "Welcome back, " + newUser.getUsername() + ".";
+                    textForResponseBuilder.append("Welcome back, ").append(newUser.getUsername()).append(".");
+                    textForResponseBuilder.append(TIP1).append(TIP2);
+                    textForResponse = textForResponseBuilder.toString();
                     takeTokenForUser(newUser.getUsername());
+
                 } else {
-                    textForResponse = "Sorry, something went wrong.";
+                    textForResponse = "Sorry, service is temporary unavailable.";
                     break;
                 }
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
@@ -127,7 +136,12 @@ public class Bot extends TelegramLongPollingBot {
                         0);
                 break;
             case GREETINGS:
-                textForResponse = "Hello, " + update.getCallbackQuery().getFrom().getFirstName() + "!";
+                StringBuilder messageForResponseBuilder = new StringBuilder();
+                messageForResponseBuilder.append("Hello, ").append(update.getCallbackQuery().getFrom().getFirstName())
+                        .append(" :)");
+                messageForResponseBuilder.append(TIP1);
+                messageForResponseBuilder.append(TIP2);
+                textForResponse = messageForResponseBuilder.toString();
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
                 break;
             case GETWL:
@@ -197,4 +211,5 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotToken() {
         return token;
     }
+
 }

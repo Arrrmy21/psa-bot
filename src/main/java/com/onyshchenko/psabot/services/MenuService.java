@@ -133,7 +133,7 @@ public class MenuService {
             row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageString));
         }
 
-        row4.add(new InlineKeyboardButton().setText("Back to menu").setCallbackData(GREETINGS));
+        row4.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData(GREETINGS));
 
         keyboard.add(row1);
         keyboard.add(row2);
@@ -172,7 +172,7 @@ public class MenuService {
                 .setCallbackData(deleteFromWithListText));
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
-        row3.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData("Main menu"));
+        row3.add(new InlineKeyboardButton().setText("Back to main menu").setCallbackData(GREETINGS));
 
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
