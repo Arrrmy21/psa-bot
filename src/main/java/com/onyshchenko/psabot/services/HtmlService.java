@@ -83,9 +83,9 @@ public class HtmlService {
                     response.append(responseLine.trim());
                 }
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("Exception while registering user [{}]", user.getUsername());
+            return "Registration error.";
         }
         return response.toString();
     }

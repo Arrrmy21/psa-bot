@@ -51,7 +51,7 @@ public class Bot extends TelegramLongPollingBot {
         String requestData;
         SendMessage responseMessage = null;
         EditMessageText editMessage = null;
-        InlineKeyboardMarkup keyboardForResponse;
+        InlineKeyboardMarkup keyboardForResponse = null;
         String userUniqueName;
 
         if (update.hasMessage() && update.getMessage().getText() != null) {
@@ -82,6 +82,10 @@ public class Bot extends TelegramLongPollingBot {
 
         switch (command.getCmd()) {
             case REGISTERUSER:
+                if (userUniqueName == null) {
+                    textForResponse = "Sorry, service is available only for users with username. Check your settings";
+                    break;
+                }
                 User newUser = new User();
                 newUser.setUserId(update.getMessage().getFrom().getId());
                 newUser.setFirstName(update.getMessage().getFrom().getFirstName());
@@ -89,11 +93,16 @@ public class Bot extends TelegramLongPollingBot {
                 newUser.setUsername(update.getMessage().getFrom().getUserName());
                 newUser.setChatId(chatId);
 
-                textForResponse = htmlService.registerUser(newUser);
-                if (textForResponse.equalsIgnoreCase("User created.")
-                        || textForResponse.equalsIgnoreCase("User already exists.")) {
-                    LOGGER.info("User exists in database.");
+                String registerUserResponse = htmlService.registerUser(newUser);
+                if (registerUserResponse.equalsIgnoreCase("User created.")) {
+                    textForResponse = "Welcome, " + newUser.getUsername() + ".";
                     takeTokenForUser(newUser.getUsername());
+                } else if (registerUserResponse.equalsIgnoreCase("User already exists.")) {
+                    textForResponse = "Welcome back, " + newUser.getUsername() + ".";
+                    takeTokenForUser(newUser.getUsername());
+                } else {
+                    textForResponse = "Sorry, something went wrong.";
+                    break;
                 }
                 keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
                 break;
@@ -172,6 +181,7 @@ public class Bot extends TelegramLongPollingBot {
                 TelegramApiException e) {
             e.printStackTrace();
         }
+
     }
 
     private void takeTokenForUser(String username) {
