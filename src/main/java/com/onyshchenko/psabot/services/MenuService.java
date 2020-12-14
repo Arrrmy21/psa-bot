@@ -80,7 +80,7 @@ public class MenuService {
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         List<InlineKeyboardButton> row4 = new ArrayList<>();
 
-        sb.append("List of games:\n");
+        sb.append("List of games:\n\n");
         for (int i = 0; i < totalObjects; i++) {
             sb.append(i + 1).append(") ");
             JSONObject game = gameList.getJSONObject(i);
@@ -155,7 +155,6 @@ public class MenuService {
 
         String url = responseJson.getString("url");
         String gameId = responseJson.getString("id");
-//        ToDo: Show more info about game;
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();

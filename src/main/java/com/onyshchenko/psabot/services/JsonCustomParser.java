@@ -17,7 +17,9 @@ public class JsonCustomParser {
 
         StringBuilder sb = new StringBuilder();
         sb.append(name).append("\n\n");
-        sb.append("Current price: ").append(price.get("currentPrice")).append("\n");
+        sb.append("Current price: ").append(price.get("currentPrice")).append("\n\n");
+        sb.append("Lowest price: ").append(price.get("lowestPrice")).append("\n");
+        sb.append("Highest price: ").append(price.get("highestPrice")).append("\n");
         sb.append("Current discount: ").append(price.get("currentDiscount")).append("\n");
 
         return sb.toString();

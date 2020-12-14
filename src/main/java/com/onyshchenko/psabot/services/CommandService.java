@@ -24,8 +24,14 @@ public class CommandService {
             return new CommandLine(Commands.REGISTERUSER);
         } else if (data.equalsIgnoreCase("/wishlist")) {
             return new CommandLine((Commands.GETWL));
-        } else if (data.contains("Name: ") || data.contains("name: ")) {
-            String nameOfGame = data.substring(6);
+        } else if (data.contains("Name:") || data.contains("name:")) {
+            String nameOfGame;
+            if (data.startsWith(" ")) {
+                nameOfGame = data.substring(6);
+            } else {
+                nameOfGame = data.substring(5);
+            }
+
             String encodedUrl = null;
             try {
                 encodedUrl = URLEncoder.encode(nameOfGame, StandardCharsets.UTF_8.toString());
