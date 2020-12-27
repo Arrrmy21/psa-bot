@@ -25,11 +25,9 @@ public class CommandService {
         } else if (data.equalsIgnoreCase("/wishlist")) {
             return new CommandLine((Commands.GETWL));
         } else if (data.contains("Name:") || data.contains("name:")) {
-            String nameOfGame;
-            if (data.startsWith(" ")) {
-                nameOfGame = data.substring(6);
-            } else {
-                nameOfGame = data.substring(5);
+            String nameOfGame = data.substring(5);
+            while (nameOfGame.startsWith(" ")) {
+                nameOfGame = nameOfGame.substring(1);
             }
 
             String encodedUrl = null;
