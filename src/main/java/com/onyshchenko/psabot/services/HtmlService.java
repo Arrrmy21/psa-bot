@@ -35,7 +35,10 @@ public class HtmlService {
 
 
     public JSONObject getJsonFromURL(String urlName, String username) {
+        return this.getJsonFromURL(urlName, username, true);
+    }
 
+    private JSONObject getJsonFromURL(String urlName, String username, boolean retry) {
         try {
             URL url = new URL(appUrl + urlName);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -53,6 +56,11 @@ public class HtmlService {
             in.close();
             return new JSONObject(response.toString());
         } catch (IOException e) {
+            if (e.getMessage().contains("Server returned HTTP response code: 403") && retry) {
+                getTokenFromService(username);
+
+                return getJsonFromURL(urlName, username, false);
+            }
             throw new JSONException("Failed to parse JSON");
         }
     }
