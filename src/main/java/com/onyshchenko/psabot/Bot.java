@@ -1,8 +1,9 @@
 package com.onyshchenko.psabot;
 
 import com.onyshchenko.psabot.models.CommandLine;
-import com.onyshchenko.psabot.models.Commands;
-import com.onyshchenko.psabot.models.User;
+import com.onyshchenko.psabot.models.ResponseExecutor;
+import com.onyshchenko.psabot.models.ServerResponse;
+import com.onyshchenko.psabot.models.UserUpdateData;
 import com.onyshchenko.psabot.services.CommandService;
 import com.onyshchenko.psabot.services.HtmlService;
 import com.onyshchenko.psabot.services.JsonCustomParser;
@@ -14,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -25,7 +24,9 @@ public class Bot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
     private static final String GAMES = "games?";
+    private static final String USERS = "users/";
     private static final String PAGE = "page=";
+    private static final String ADD_FILTER = "&filter=";
     private static final String TIP1 = "\nYou can search for games typing \"name: [name of game]\"";
     private static final String TIP2 = "\nexample:\nname: Mafia";
 
@@ -47,153 +48,150 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         LOGGER.info("Received update message. Id: [{}]", update.getUpdateId());
-        CommandLine command;
-        int userId;
-        long chatId;
-        String requestData;
-        SendMessage responseMessage = null;
-        EditMessageText editMessage = null;
-        InlineKeyboardMarkup keyboardForResponse = null;
-        String userUniqueName;
 
-        if (update.hasMessage() && update.getMessage().getText() != null) {
-            userId = update.getMessage().getFrom().getId();
-            requestData = update.getMessage().getText();
-            chatId = update.getMessage().getChatId();
-            userUniqueName = update.getMessage().getFrom().getUserName();
-            LOGGER.info("Update has message from user: [{}]", userId);
-        } else {
-            userId = update.getCallbackQuery().getFrom().getId();
-            userUniqueName = update.getCallbackQuery().getFrom().getUserName();
-            requestData = update.getCallbackQuery().getData();
-            chatId = update.getCallbackQuery().getMessage().getChatId();
-            LOGGER.info("Update has callback form user: [{}]", userId);
-        }
-        String textForResponse = "Default reply";
-        command = commandService.prepareCommandFromRequest(requestData);
+        UserUpdateData userUpdateData = new UserUpdateData(update);
+        LOGGER.info("Update has message from user: [{}]", userUpdateData.getUserId());
 
-        if (command.getCmd().equals(Commands.REGISTERUSER)
-                || command.getCmd().equals(Commands.SEARCH) || command.getCmd().equals(Commands.GETWL)
-                || command.getCmd().equals(Commands.GETGAME)) {
-            responseMessage = new SendMessage();
-            responseMessage.setChatId(chatId);
-        } else {
-            editMessage = new EditMessageText();
-            editMessage.setChatId(chatId);
-            editMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-        }
+        InlineKeyboardMarkup keyboardForResponse = menuService.getMainMenuInlineKeyboard(userUpdateData.getUserId(), null);
+        String textForResponse = "Error!";
 
-        switch (command.getCmd()) {
+        CommandLine command = commandService.prepareCommandFromRequest(userUpdateData.getRequestData());
+        String textFromServer = "textFromServer: default";
+        JSONObject jsonFromURL;
+
+
+        switch (command.getCommand()) {
             case REGISTERUSER:
-                if (userUniqueName == null) {
-                    textForResponse = "Sorry, service is available only for users with username. Check your settings";
+                if (userUpdateData.getUserName() == null) {
+                    textForResponse = ServerResponse.USERNAME_ABSENCE.getTextResponse();
                     break;
                 }
-                User newUser = new User();
-                newUser.setUserId(update.getMessage().getFrom().getId());
-                newUser.setFirstName(update.getMessage().getFrom().getFirstName());
-                newUser.setLastName(update.getMessage().getFrom().getLastName());
-                newUser.setUsername(update.getMessage().getFrom().getUserName());
-                newUser.setChatId(chatId);
 
-                String registerUserResponse = htmlService.registerUser(newUser);
+                String registerUserResponse = htmlService.registerUser(userUpdateData.getUser());
                 StringBuilder textForResponseBuilder = new StringBuilder();
-                if (registerUserResponse.equalsIgnoreCase("User created.")) {
-                    textForResponseBuilder.append("Welcome, ").append(newUser.getUsername()).append(".");
+                if (registerUserResponse.equalsIgnoreCase(ServerResponse.USER_CREATED.getTextResponse())) {
+                    textForResponseBuilder.append("Welcome, ").append(userUpdateData.getUserName()).append(".");
                     textForResponseBuilder.append(TIP1).append(TIP2);
                     textForResponse = textForResponseBuilder.toString();
-                    takeTokenForUser(newUser.getUsername());
-                } else if (registerUserResponse.equalsIgnoreCase("User already exists.")) {
-                    textForResponseBuilder.append("Welcome back, ").append(newUser.getUsername()).append(".");
+                    takeTokenForUser(userUpdateData.getUserName());
+                } else if (registerUserResponse.equalsIgnoreCase(ServerResponse.USER_EXIST.getTextResponse())) {
+                    textForResponseBuilder.append("Welcome back, ").append(userUpdateData.getUserName()).append(".");
                     textForResponseBuilder.append(TIP1).append(TIP2);
                     textForResponse = textForResponseBuilder.toString();
-                    takeTokenForUser(newUser.getUsername());
+                    takeTokenForUser(userUpdateData.getUserName());
 
                 } else {
-                    textForResponse = "Sorry, service is temporary unavailable.";
+                    textForResponse = ServerResponse.SERVICE_UNAVAILABLE.getTextResponse();
                     break;
                 }
-                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(
+                        userUpdateData.getUserId(), command);
                 break;
             case GETGAME:
-                String gameId = command.getId();
+                String gameId = command.getIdToPass();
                 String urlName = "games/" + gameId;
 
-                JSONObject jsonFromURL = htmlService.getJsonFromURL(urlName, userUniqueName);
+                textFromServer = htmlService.getTextResponseFromURL(urlName, userUpdateData.getUserName());
+                jsonFromURL = new JSONObject(textFromServer);
 
                 textForResponse = JsonCustomParser.getGameResponse(jsonFromURL);
-                keyboardForResponse = menuService.getGameMenu(jsonFromURL, userId, command.getPreviousPageInfo());
+                keyboardForResponse = menuService.getGameMenu(jsonFromURL, userUpdateData.getUserId(), command);
                 break;
             case GETGAMES:
-                StringBuilder getGamesUrl = new StringBuilder();
-                getGamesUrl.append(GAMES);
-                getGamesUrl.append(PAGE).append(command.getCurPage());
-
-                JSONObject responseJson = htmlService.getJsonFromURL(getGamesUrl.toString(), userUniqueName);
-
-                textForResponse = JsonCustomParser.getListResponse(responseJson);
-                keyboardForResponse = menuService.getListMenu(responseJson, Commands.GETGAMES, command.getCurPage(),
-                        0);
+                StringBuilder getGamesUrlBuilder = new StringBuilder(GAMES);
+                getGamesUrlBuilder.append(PAGE).append(command.getCurPage());
+                if (command.getFilter() != null) {
+                    getGamesUrlBuilder.append(ADD_FILTER).append(command.getFilter().getFilterName());
+                }
+                String getGamesUrl = getGamesUrlBuilder.toString();
+                try {
+                    textFromServer = htmlService.getTextResponseFromURL(getGamesUrl, userUpdateData.getUserName());
+                } catch (Exception ex) {
+                    LOGGER.info("Exception occurred.");
+                }
+                if (!textFromServer.equals(ServerResponse.FAILED_RESPONSE.getTextResponse())) {
+                    jsonFromURL = new JSONObject(textFromServer);
+                    textForResponse = JsonCustomParser.getListResponse(jsonFromURL);
+                    keyboardForResponse = menuService.getListMenu(jsonFromURL, command, 0);
+                }
                 break;
             case GREETINGS:
-                StringBuilder messageForResponseBuilder = new StringBuilder();
-                messageForResponseBuilder.append("Hello, ").append(update.getCallbackQuery().getFrom().getFirstName())
-                        .append(" :)");
-                messageForResponseBuilder.append(TIP1);
-                messageForResponseBuilder.append(TIP2);
-                textForResponse = messageForResponseBuilder.toString();
-                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
+                textForResponse = "Hello, " + userUpdateData.getFirstName() +
+                        " :)" +
+                        TIP1 +
+                        TIP2;
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(
+                        userUpdateData.getUserId(), command);
+                break;
+            case GAMESMENU:
+                textForResponse = "Games menu";
+                keyboardForResponse = menuService.getGamesMenu();
+                break;
+            case SWITCH:
+                String switchUserNotificationsUrl = USERS + userUpdateData.getUserId() + "/notifications/" + command.getIdToPass().toLowerCase();
+                htmlService.getTextResponseFromURL(switchUserNotificationsUrl, userUpdateData.getUserName());
+
+            case CABINET:
+                String getUserNotificationsUrl = USERS + userUpdateData.getUserId() + "/notifications";
+                textForResponse = htmlService.getTextResponseFromURL(getUserNotificationsUrl, userUpdateData.getUserName());
+
+                String commandToSwitchNotificationStatus;
+                if (textForResponse.equalsIgnoreCase(ServerResponse.NOTIFICATIONS_ON.getTextResponse())) {
+                    commandToSwitchNotificationStatus = "OFF";
+                } else {
+                    commandToSwitchNotificationStatus = "ON";
+                }
+                textForResponse = "Daily notifications in case of sales on games in your wishlist.";
+                keyboardForResponse = menuService.getCabinetMenu(userUpdateData.getUserId(), commandToSwitchNotificationStatus);
                 break;
             case GETWL:
-                StringBuilder getWishListUrl = new StringBuilder();
-                getWishListUrl.append(GAMES);
-                getWishListUrl.append(PAGE).append(command.getCurPage());
+                String getWishListUrl = GAMES +
+                        PAGE + command.getCurPage() +
+                        ADD_FILTER + "userId=" + userUpdateData.getUserId();
+                textFromServer = htmlService.getTextResponseFromURL(getWishListUrl, userUpdateData.getUserName());
+                JSONObject getWishListJson = new JSONObject(textFromServer);
 
-                getWishListUrl.append("&filter=").append("userId=").append(userId);
-
-                JSONObject getWishListJson = htmlService.getJsonFromURL(getWishListUrl.toString(), userUniqueName);
                 textForResponse = JsonCustomParser.getListResponse(getWishListJson);
-                keyboardForResponse = menuService.getListMenu(getWishListJson, Commands.GETWL, command.getCurPage(),
-                        userId);
+                keyboardForResponse = menuService.getListMenu(getWishListJson, command, userUpdateData.getUserId());
                 break;
             case ADDTOWL:
-                String addToWishListUrl = "users/" + command.getId();
-                textForResponse = htmlService.addToWishList(addToWishListUrl, userUniqueName);
-                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
+                String addToWishListUrl = USERS + command.getIdToPass();
+                textForResponse = htmlService.addToWishList(addToWishListUrl, userUpdateData.getUserName());
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userUpdateData.getUserId(), command);
                 break;
             case CLEARWL:
-                String clearWishListUrl = "users/" + command.getId();
-                textForResponse = htmlService.deleteFromWishList(clearWishListUrl, userUniqueName);
-                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
+                String clearWishListUrl = USERS + command.getIdToPass();
+                textForResponse = htmlService.deleteFromWishList(clearWishListUrl, userUpdateData.getUserName());
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userUpdateData.getUserId(), command);
                 break;
             case SEARCH:
-                StringBuilder searchByName = new StringBuilder();
-                searchByName.append(GAMES);
-                searchByName.append(PAGE).append(command.getCurPage());
-                searchByName.append("&filter=").append("name=").append(command.getId());
-
-                JSONObject getGameByNameJson = htmlService.getJsonFromURL(searchByName.toString(), userUniqueName);
+                String searchByName = GAMES +
+                        PAGE + command.getCurPage() +
+                        ADD_FILTER + "name=" + command.getIdToPass();
+                textFromServer = htmlService.getTextResponseFromURL(searchByName, userUpdateData.getUserName());
+                JSONObject getGameByNameJson = new JSONObject(textFromServer);
                 textForResponse = JsonCustomParser.getListResponse(getGameByNameJson);
-                keyboardForResponse = menuService.getListMenu(getGameByNameJson, Commands.SEARCH, command.getCurPage(),
-                        command.getId());
+                keyboardForResponse = menuService.getListMenu(getGameByNameJson, command, command.getIdToPass());
                 break;
             default:
-                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userId, command.getPreviousPageInfo());
+                keyboardForResponse = menuService.getMainMenuInlineKeyboard(userUpdateData.getUserId(), command);
         }
 
+        ResponseExecutor responseExecutor = ResponseExecutor.newBuilder()
+                .addCommand(command)
+                .addUserInfo(userUpdateData)
+                .addTextForReply(textForResponse)
+                .addInlineKeyboard(keyboardForResponse)
+                .build();
+
         try {
-            if (responseMessage != null) {
-                responseMessage.setText(textForResponse);
-                responseMessage.setReplyMarkup(keyboardForResponse);
-                execute(responseMessage);
-            } else {
-                editMessage.setText(textForResponse);
-                editMessage.setReplyMarkup(keyboardForResponse);
-                execute(editMessage);
-            }
-        } catch (
-                TelegramApiException e) {
+            execute(responseExecutor.getMethodToExecute());
+        } catch (TelegramApiException e) {
+            LOGGER.info("Telegram APU Exception.");
             e.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.info("Unknown exception occurred.");
+            ex.printStackTrace();
         }
 
     }

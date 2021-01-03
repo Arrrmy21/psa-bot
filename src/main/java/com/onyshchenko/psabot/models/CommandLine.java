@@ -4,40 +4,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CommandLine {
 
-    private Commands cmd;
-    private String id;
+    @JsonProperty("cmd")
+    private Commands command;
+    @JsonProperty("id")
+    private String idToPass;
     private int curPage;
     private int prevPage;
-    private int nextPage;
     @JsonProperty("add")
     private String previousPageInfo;
+    @JsonProperty("f")
+    private Filter filter;
 
     public CommandLine() {
     }
 
     public CommandLine(Commands cmd) {
-        this.cmd = cmd;
+        this.command = cmd;
     }
 
     public CommandLine(Commands cmd, String id) {
-        this.cmd = cmd;
-        this.id = id;
+        this.command = cmd;
+        this.idToPass = id;
     }
 
-    public Commands getCmd() {
-        return cmd;
+    public Commands getCommand() {
+        return command;
     }
 
-    public void setCmd(Commands cmd) {
-        this.cmd = cmd;
+    public void setCommand(Commands command) {
+        this.command = command;
     }
 
-    public String getId() {
-        return id;
+    public String getIdToPass() {
+        return idToPass;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdToPass(String idToPass) {
+        this.idToPass = idToPass;
     }
 
     public int getCurPage() {
@@ -48,12 +51,12 @@ public class CommandLine {
         this.curPage = curPage;
     }
 
-    public void setPrevPage(int prevPage) {
-        this.prevPage = prevPage;
+    public int getPrevPage() {
+        return prevPage;
     }
 
-    public void setNextPage(int nextPage) {
-        this.nextPage = nextPage;
+    public void setPrevPage(int prevPage) {
+        this.prevPage = prevPage;
     }
 
     public String getPreviousPageInfo() {
@@ -62,5 +65,31 @@ public class CommandLine {
 
     public void setPreviousPageInfo(String previousPageInfo) {
         this.previousPageInfo = previousPageInfo;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public enum Filter {
+
+        DISCOUNT_FILTER("disc%3E00", 0),
+        FREE_GAMES_FILTER("price=00", 1);
+
+        private final String filterName;
+        private final int filterId;
+
+        Filter(String filterName, int filterId) {
+            this.filterName = filterName;
+            this.filterId = filterId;
+        }
+
+        public int getFilterId() {
+            return filterId;
+        }
+
+        public String getFilterName() {
+            return filterName;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.onyshchenko.psabot.services;
 
+import com.onyshchenko.psabot.models.ServerResponse;
 import com.onyshchenko.psabot.models.User;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,34 +34,40 @@ public class HtmlService {
     private Map<String, String> userTokens = new HashMap<>();
 
 
-    public JSONObject getJsonFromURL(String urlName, String username) {
-        return this.getJsonFromURL(urlName, username, true);
+    public String getTextResponseFromURL(String urlName, String username) {
+        return this.getTextResponseFromURL(urlName, username, true);
     }
 
-    private JSONObject getJsonFromURL(String urlName, String username, boolean retry) {
+    private String getTextResponseFromURL(String urlName, String username, boolean retry) {
         try {
-            URL url = new URL(appUrl + urlName);
+            String finalUrl = appUrl + urlName;
+            URL url = new URL(finalUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            if (urlName.contains("/notifications/on") || urlName.contains("/notifications/off")) {
+                con.setRequestMethod("POST");
+            }
+            con.setRequestProperty("Accept-Encoding", "identity");
 
             fillRequestWithToken(con, username);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
-                            con.getInputStream()));
+                            con.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
             StringBuilder response = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
             in.close();
-            return new JSONObject(response.toString());
+            return response.toString();
         } catch (IOException e) {
             if (e.getMessage().contains("Server returned HTTP response code: 403") && retry) {
                 getTokenFromService(username);
 
-                return getJsonFromURL(urlName, username, false);
+                return getTextResponseFromURL(urlName, username, false);
             }
-            throw new JSONException("Failed to parse JSON");
+            LOGGER.error("Failed to get server response.");
+            return ServerResponse.FAILED_RESPONSE.getTextResponse();
         }
     }
 
