@@ -60,6 +60,14 @@ public class UserUpdateData {
         return lastName;
     }
 
+    public String getNameToAddress() {
+        return getFirstName() != null ? getFirstName() : getAlternateAddressName();
+    }
+
+    private String getAlternateAddressName() {
+        return getLastName() != null ? getLastName() : getUserName();
+    }
+
     public User getUser() {
         User user = new User();
 

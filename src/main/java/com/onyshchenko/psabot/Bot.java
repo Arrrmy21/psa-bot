@@ -116,7 +116,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
                 break;
             case GREETINGS:
-                textForResponse = "Hello, " + userUpdateData.getFirstName() +
+                textForResponse = "Hello, " + userUpdateData.getNameToAddress() +
                         " :)" +
                         TIP1 +
                         TIP2;
@@ -130,7 +130,6 @@ public class Bot extends TelegramLongPollingBot {
             case SWITCH:
                 String switchUserNotificationsUrl = USERS + userUpdateData.getUserId() + "/notifications/" + command.getIdToPass().toLowerCase();
                 htmlService.getTextResponseFromURL(switchUserNotificationsUrl, userUpdateData.getUserName());
-
             case CABINET:
                 String getUserNotificationsUrl = USERS + userUpdateData.getUserId() + "/notifications";
                 textForResponse = htmlService.getTextResponseFromURL(getUserNotificationsUrl, userUpdateData.getUserName());
