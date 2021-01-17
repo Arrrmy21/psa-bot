@@ -1,0 +1,352 @@
+{
+  "content": [
+    {
+      "id": "619848000",
+      "name": "Persona®5 Strikers",
+      "searchName": "persona®5 strikers",
+      "url": "EP0177-CUSA20040_00-BSTUBCUSA2004000",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a75dc0002",
+        "currentPrice": 1799,
+        "previousPrice": 1799,
+        "highestPrice": 1799,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 1799,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2021-02-22",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "SEGA EUROPE LTD",
+      "searchPublisher": "sega europe ltd"
+    },
+    {
+      "id": "1792585291",
+      "name": "Little Nightmares II PS4 & PS5",
+      "searchName": "little nightmares ii ps4 & ps5",
+      "url": "EP0700-CUSA12779_00-LITTLENIGHTS2000",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a75fc0003",
+        "currentPrice": 949,
+        "previousPrice": 949,
+        "highestPrice": 1000,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 949,
+        "highestDiscount": 10,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [
+        "FPS",
+        "QUEST"
+      ],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2021-02-10",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "BANDAI NAMCO ENTERTAINMENT EUROPE",
+      "searchPublisher": "bandai namco entertainment europe"
+    },
+    {
+      "id": "-90855278",
+      "name": "Re:ZERO -Starting Life in Another World- The Prophecy of the Throne",
+      "searchName": "re:zero -starting life in another world- the prophecy of the throne",
+      "url": "EP4947-CUSA18709_00-REZEROEU00000000",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a761f0004",
+        "currentPrice": 1799,
+        "previousPrice": 1799,
+        "highestPrice": 1799,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 1799,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2021-02-05",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "SPIKE CHUNSOFT, INC.",
+      "searchPublisher": "spike chunsoft, inc."
+    },
+    {
+      "id": "713008615",
+      "name": "OUTRIDERS",
+      "searchName": "outriders",
+      "url": "EP0082-CUSA07371_00-OUTRIDERS0000000",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a763d0005",
+        "currentPrice": 1999,
+        "previousPrice": 1999,
+        "highestPrice": 1999,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 1999,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2021-02-01",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "Square Enix LTD",
+      "searchPublisher": "square enix ltd"
+    },
+    {
+      "id": "-1855723580",
+      "name": "Mana Spark",
+      "searchName": "mana spark",
+      "url": "EP2696-CUSA25825_00-MANASPARKPS4V100",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a76610006",
+        "currentPrice": 329,
+        "previousPrice": 329,
+        "highestPrice": 329,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 329,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [
+        "Adventure",
+        "RPG"
+      ],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-28",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "QUBICGAMES SP. Z O.O.",
+      "searchPublisher": "qubicgames sp. z o.o."
+    },
+    {
+      "id": "-2139232060",
+      "name": "16-Bit Soccer",
+      "searchName": "16-bit soccer",
+      "url": "EP4961-CUSA26186_00-SBSPS40000000001",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a76800007",
+        "currentPrice": 194,
+        "previousPrice": 194,
+        "highestPrice": 194,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 194,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-24",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "Sprakelsoft GmbH",
+      "searchPublisher": "sprakelsoft gmbh"
+    },
+    {
+      "id": "1154799707",
+      "name": "DungeonTop",
+      "searchName": "dungeontop",
+      "url": "EP2696-CUSA25752_00-DUNGEONTOPPS4V10",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a76a50008",
+        "currentPrice": 459,
+        "previousPrice": 459,
+        "highestPrice": 459,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 459,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [
+        "RPG"
+      ],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-24",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "QUBICGAMES SP. Z O.O.",
+      "searchPublisher": "qubicgames sp. z o.o."
+    },
+    {
+      "id": "1156186860",
+      "name": "One Strike",
+      "searchName": "one strike",
+      "url": "EP2696-CUSA25859_00-ONESTRIKEPS4V100",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a76dc000a",
+        "currentPrice": 159,
+        "previousPrice": 159,
+        "highestPrice": 159,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 159,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-24",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "QUBICGAMES SP. Z O.O.",
+      "searchPublisher": "qubicgames sp. z o.o."
+    },
+    {
+      "id": "-967683396",
+      "name": "Super Sports Blast",
+      "searchName": "super sports blast",
+      "url": "EP1070-CUSA25381_00-SUPERSPORTSBLAST",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a76fc000b",
+        "currentPrice": 819,
+        "previousPrice": 819,
+        "highestPrice": 819,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 819,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [
+        "PARTY",
+        "SPORTS"
+      ],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-24",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "Unfinished Pixel",
+      "searchPublisher": "unfinished pixel"
+    },
+    {
+      "id": "366470413",
+      "name": "ACT IT OUT XL! A Game of Charades",
+      "searchName": "act it out xl! a game of charades",
+      "url": "EP0826-CUSA13685_00-0000000000000001",
+      "category": "GAME",
+      "price": {
+        "id": "2c98808376ca89a20176ca8a7714000c",
+        "currentPrice": 329,
+        "previousPrice": 329,
+        "highestPrice": 329,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 329,
+        "highestDiscount": 0,
+        "currentDiscount": 0,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+      },
+      "genres": [
+        "PARTY"
+      ],
+      "deviceTypes": [
+        "PS4"
+      ],
+      "releaseDate": "2020-12-24",
+      "detailedInfoFilledIn": true,
+      "errorWhenFilling": false,
+      "publisher": "SNAP FINGER CLICK LTD",
+      "searchPublisher": "snap finger click ltd"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "pageNumber": 0,
+    "pageSize": 10,
+    "offset": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "totalElements": 4468,
+  "totalPages": 447,
+  "last": false,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "numberOfElements": 10,
+  "first": true,
+  "size": 10,
+  "number": 0,
+  "empty": false
+}

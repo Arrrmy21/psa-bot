@@ -1,4 +1,4 @@
-package com.onyshchenko.psabot.models;
+package com.onyshchenko.psabot.models.user;
 
 
 import java.util.List;

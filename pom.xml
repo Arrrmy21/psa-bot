@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.onyshchenko</groupId>
     <artifactId>psabot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>psabot</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Java Bot for PSAnalyzer service</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -51,11 +51,12 @@
             <version>4.1.2</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.telegram</groupId>-->
-<!--            <artifactId>telegrambots</artifactId>-->
-<!--            <version>4.6</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

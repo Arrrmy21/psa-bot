@@ -1,0 +1,31 @@
+{
+    "id": "619848000",
+    "name": "Persona®5 Strikers",
+    "searchName": "persona®5 strikers",
+    "url": "EP0177-CUSA20040_00-BSTUBCUSA2004000",
+    "category": "GAME",
+    "price": {
+        "id": "2c98808376ca89a20176ca8a75dc0002",
+        "currentPrice": 1799,
+        "previousPrice": 1799,
+        "highestPrice": 2000,
+        "highestPriceDate": "2021-01-03",
+        "lowestPriceDate": "2021-01-03",
+        "lowestPrice": 1400,
+        "highestDiscount": 100,
+        "currentDiscount": 50,
+        "currentPercentageDiscount": 0,
+        "highestPercentageDiscount": 0,
+        "currency": "UAH",
+        "priceChanged": false
+    },
+    "genres": [],
+    "deviceTypes": [
+        "PS4"
+    ],
+    "releaseDate": "2021-02-22",
+    "detailedInfoFilledIn": true,
+    "errorWhenFilling": false,
+    "publisher": "SEGA EUROPE LTD",
+    "searchPublisher": "sega europe ltd"
+}

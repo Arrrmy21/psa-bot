@@ -1,11 +1,12 @@
-package com.onyshchenko.psabot.models;
+package com.onyshchenko.psabot.models.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onyshchenko.psabot.models.common.Command;
 
-public class CommandLine {
+public class UserRequest {
 
     @JsonProperty("cmd")
-    private Commands command;
+    private Command command;
     @JsonProperty("id")
     private String idToPass;
     private int curPage;
@@ -15,23 +16,23 @@ public class CommandLine {
     @JsonProperty("f")
     private Filter filter;
 
-    public CommandLine() {
+    public UserRequest() {
     }
 
-    public CommandLine(Commands cmd) {
+    public UserRequest(Command cmd) {
         this.command = cmd;
     }
 
-    public CommandLine(Commands cmd, String id) {
+    public UserRequest(Command cmd, String id) {
         this.command = cmd;
         this.idToPass = id;
     }
 
-    public Commands getCommand() {
+    public Command getCommand() {
         return command;
     }
 
-    public void setCommand(Commands command) {
+    public void setCommand(Command command) {
         this.command = command;
     }
 

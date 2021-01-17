@@ -1,7 +1,7 @@
-package com.onyshchenko.psabot.services;
+package com.onyshchenko.psabot.services.domainserver;
 
-import com.onyshchenko.psabot.models.ServerResponse;
-import com.onyshchenko.psabot.models.User;
+import com.onyshchenko.psabot.models.common.StandardResponse;
+import com.onyshchenko.psabot.models.user.User;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class HtmlService {
+public class RestService implements DomainServiceInterface {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestService.class);
 
     @Value("${bot.main.server.url}")
     private String appUrl;
@@ -34,11 +34,11 @@ public class HtmlService {
     private Map<String, String> userTokens = new HashMap<>();
 
 
-    public String getTextResponseFromURL(String urlName, String username) {
-        return this.getTextResponseFromURL(urlName, username, true);
+    public String executeByUrl(String urlName, String username) {
+        return this.executeByUrl(urlName, username, true);
     }
 
-    private String getTextResponseFromURL(String urlName, String username, boolean retry) {
+    private String executeByUrl(String urlName, String username, boolean retry) {
         try {
             String finalUrl = appUrl + urlName;
             URL url = new URL(finalUrl);
@@ -64,10 +64,10 @@ public class HtmlService {
             if (e.getMessage().contains("Server returned HTTP response code: 403") && retry) {
                 getTokenFromService(username);
 
-                return getTextResponseFromURL(urlName, username, false);
+                return executeByUrl(urlName, username, false);
             }
             LOGGER.error("Failed to get server response.");
-            return ServerResponse.FAILED_RESPONSE.getTextResponse();
+            return StandardResponse.FAILED_RESPONSE.getTextResponse();
         }
     }
 
