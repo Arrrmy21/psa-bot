@@ -57,6 +57,10 @@ public class ResponseBodyParser {
 
         List<GameDto> gameList = responseBody.getGameList();
 
+        if (gameList.isEmpty()) {
+            return "There are no games in list";
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(".!.                   List of games                   .!.\n");
         int position = 1;

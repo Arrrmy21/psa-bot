@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.onyshchenko.psabot.models.common.Command.CLEARWL;
+import static com.onyshchenko.psabot.models.common.Command.CONFIRM;
 import static com.onyshchenko.psabot.models.common.Command.GETGAME;
 
 public class GameListMenu extends MenuProvider {
@@ -38,9 +38,12 @@ public class GameListMenu extends MenuProvider {
         String current;
         if (command.equals(Command.GETGAMES)) {
             current = "GG-" + currentPage;
+        } else if (command.equals(Command.SEARCH)) {
+            current = "SE-" + currentPage;
         } else {
             current = "WL-" + currentPage;
         }
+
         int buttonName = 0;
         List<GameDto> gameList = responseBody.getGameList();
         for (GameDto game : gameList) {
@@ -90,9 +93,10 @@ public class GameListMenu extends MenuProvider {
         keyboard.add(row2);
         keyboard.add(row3);
         keyboard.add(row4);
-        if (command.equals(Command.GETWL)) {
+
+        if (command.equals(Command.GETWL) && !gameList.isEmpty()) {
             String clearWishlistCallback = new ButtonCallbackRequestBuilder()
-                    .addCommand(CLEARWL.getId())
+                    .addCommand(CONFIRM.getId())
                     .addId(userUpdateData.getUserId() + "/" + "all")
                     .buildRequest();
             row5.add(new InlineKeyboardButton().setText("Clear wish list").setCallbackData(clearWishlistCallback));

@@ -77,21 +77,24 @@ public class GameMenu extends MenuProvider {
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
 
-            ButtonCallbackRequestBuilder previousPageBuilder = new ButtonCallbackRequestBuilder();
-            if (previousPageDataList[0].equalsIgnoreCase("GG")) {
-                previousPageBuilder.addCommand(GETGAMES.getId());
-            } else {
-                previousPageBuilder.addCommand(GETWL.getId());
-            }
-            previousPageBuilder.addCurrentPage(previousPageDataList[1])
-                    .addPreviousPage(previousPageDataList[1]);
+            if (!previousPageDataList[0].equalsIgnoreCase("SE")) {
 
-            if (filter != null) {
-                previousPageBuilder.addFilter(filter);
-            }
+                ButtonCallbackRequestBuilder previousPageBuilder = new ButtonCallbackRequestBuilder();
+                if (previousPageDataList[0].equalsIgnoreCase("GG")) {
+                    previousPageBuilder.addCommand(GETGAMES.getId());
+                } else {
+                    previousPageBuilder.addCommand(GETWL.getId());
+                }
+                previousPageBuilder.addCurrentPage(previousPageDataList[1])
+                        .addPreviousPage(previousPageDataList[1]);
 
-            String previousPage = previousPageBuilder.buildRequest();
-            row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
+                if (filter != null) {
+                    previousPageBuilder.addFilter(filter);
+                }
+
+                String previousPage = previousPageBuilder.buildRequest();
+                row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
+            }
         }
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();

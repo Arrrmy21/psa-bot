@@ -4,6 +4,7 @@ import com.onyshchenko.psabot.models.common.Command;
 import com.onyshchenko.psabot.services.command.processors.AddToWishlistProcessor;
 import com.onyshchenko.psabot.services.command.processors.CabinetProcessor;
 import com.onyshchenko.psabot.services.command.processors.ClearWishlistProcessor;
+import com.onyshchenko.psabot.services.command.processors.ConfirmationProcessor;
 import com.onyshchenko.psabot.services.command.processors.DefaultProcessor;
 import com.onyshchenko.psabot.services.command.processors.GamesMenuProcessor;
 import com.onyshchenko.psabot.services.command.processors.GetGameProcessor;
@@ -49,6 +50,8 @@ public class CommandProcessorFactory {
     private SwitchNotificationsProcessor switchNotificationsProcessor;
     @Autowired
     private DefaultProcessor defaultProcessor;
+    @Autowired
+    private ConfirmationProcessor confirmationProcessor;
 
     private static final EnumMap<Command, CommandProcessor> handler = new EnumMap<>(Command.class);
 
@@ -66,6 +69,7 @@ public class CommandProcessorFactory {
         handler.put(Command.CABINET, cabinetProcessor);
         handler.put(Command.SWITCH, switchNotificationsProcessor);
         handler.put(Command.REGULAR_REPLY, defaultProcessor);
+        handler.put(Command.CONFIRM, confirmationProcessor);
 
         return handler;
     }

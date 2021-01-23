@@ -1,5 +1,6 @@
 package com.onyshchenko.psabot.models.common;
 
+import com.onyshchenko.psabot.services.menu.ConfirmationMenu;
 import com.onyshchenko.psabot.services.menu.PersonalCabinetMenu;
 import com.onyshchenko.psabot.services.menu.GameMenu;
 import com.onyshchenko.psabot.services.menu.GameSearchMenu;
@@ -22,7 +23,8 @@ public enum Command {
     GAMESMENU("gamesMenu", 8, new GameSearchMenu()),
     CABINET("cabinet", 9, new PersonalCabinetMenu()),
     SWITCH("switchNotifications", 10, new PersonalCabinetMenu()),
-    REGULAR_REPLY("regularReply", 11, new MainMenu());
+    REGULAR_REPLY("regularReply", 11, new MainMenu()),
+    CONFIRM("confirm", 12, new ConfirmationMenu());
 
 
     private final String commandName;

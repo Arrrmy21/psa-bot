@@ -25,6 +25,7 @@ public enum StandardResponse {
     GET_GAMES_RESPONSE("Get games response"),
     GET_WISHLIST("Get wishlist response"),
     SEARCH_GAMES("Get search games result."),
+    CONFIRM_DELETE("You really want to delete all games from wishlist?"),
     DEFAULT_REPLY("Default reply.");
 
     private static final String TIP1 = "\nYou can search for games typing \"name: [name of game]\"";
