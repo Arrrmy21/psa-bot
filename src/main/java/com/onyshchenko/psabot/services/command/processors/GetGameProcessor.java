@@ -15,7 +15,7 @@ public class GetGameProcessor extends CommandProcessor {
     public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
 
         String gameId = commandLine.getIdToPass();
-        String urlName = "games/" + gameId;
+        String urlName = "games/" + gameId + "/" + userUpdateData.getUserId();
 
         String textResponseFromServer = mainServerService.executeByUrl(urlName, userUpdateData.getUserName());
 

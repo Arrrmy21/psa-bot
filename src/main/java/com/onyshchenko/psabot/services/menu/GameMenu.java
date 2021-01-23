@@ -32,6 +32,7 @@ public class GameMenu extends MenuProvider {
         ResponseBody responseBody = (ResponseBody) uniqueObject;
         GameDto game = responseBody.getGameList().get(0);
 
+        boolean isGameInWishList = game.isInWl();
         String url = game.getUrl();
         String gameId = game.getId();
 
@@ -43,26 +44,32 @@ public class GameMenu extends MenuProvider {
         List<InlineKeyboardButton> row2 = new ArrayList<>();
 
         String previousPageData = commandLine.getPreviousPageInfo();
-        ButtonCallbackRequestBuilder addToWithListTextBuilder = new ButtonCallbackRequestBuilder()
-                .addCommand(ADDTOWL.getId())
-                .addId(userUpdateData.getUserId() + "/" + gameId)
-                .addAdditionalParams(previousPageData);
 
-        if (filter != null) {
-            addToWithListTextBuilder.addFilter(filter);
+        if (!isGameInWishList) {
+            ButtonCallbackRequestBuilder addToWithListTextBuilder = new ButtonCallbackRequestBuilder()
+                    .addCommand(ADDTOWL.getId())
+                    .addId(userUpdateData.getUserId() + "/" + gameId)
+                    .addAdditionalParams(previousPageData);
+
+            if (filter != null) {
+                addToWithListTextBuilder.addFilter(filter);
+            }
+            String addToWithListText = addToWithListTextBuilder.buildRequest();
+
+            row2.add(new InlineKeyboardButton().setText("Add to wishList").setCallbackData(addToWithListText));
+        } else {
+            ButtonCallbackRequestBuilder deleteFromWithListBuilder = new ButtonCallbackRequestBuilder()
+                    .addCommand(CLEARWL.getId())
+                    .addId(userUpdateData.getUserId() + "/" + gameId)
+                    .addAdditionalParams(previousPageData);
+
+            if (filter != null) {
+                deleteFromWithListBuilder.addFilter(filter);
+            }
+            String deleteFromWithListText = deleteFromWithListBuilder.buildRequest();
+            row2.add(new InlineKeyboardButton().setText("Delete from wishList")
+                    .setCallbackData(deleteFromWithListText));
         }
-        String addToWithListText = addToWithListTextBuilder.buildRequest();
-
-        row2.add(new InlineKeyboardButton().setText("Add to wishList").setCallbackData(addToWithListText));
-
-
-        String deleteFromWithListText = new ButtonCallbackRequestBuilder()
-                .addCommand(CLEARWL.getId())
-                .addId(userUpdateData.getUserId() + "/" + gameId)
-                .addAdditionalParams(previousPageData)
-                .buildRequest();
-        row2.add(new InlineKeyboardButton().setText("Delete from wishList")
-                .setCallbackData(deleteFromWithListText));
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(GREETINGS_COMMAND));
@@ -70,17 +77,17 @@ public class GameMenu extends MenuProvider {
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
 
-            ButtonCallbackRequestBuilder previousPageBuilder = new ButtonCallbackRequestBuilder()
-                    .addCurrentPage(previousPageDataList[1])
-                    .addPreviousPage(previousPageDataList[1]);
-
-            if (filter != null) {
-                previousPageBuilder.addFilter(filter);
-            }
+            ButtonCallbackRequestBuilder previousPageBuilder = new ButtonCallbackRequestBuilder();
             if (previousPageDataList[0].equalsIgnoreCase("GG")) {
                 previousPageBuilder.addCommand(GETGAMES.getId());
             } else {
                 previousPageBuilder.addCommand(GETWL.getId());
+            }
+            previousPageBuilder.addCurrentPage(previousPageDataList[1])
+                    .addPreviousPage(previousPageDataList[1]);
+
+            if (filter != null) {
+                previousPageBuilder.addFilter(filter);
             }
 
             String previousPage = previousPageBuilder.buildRequest();

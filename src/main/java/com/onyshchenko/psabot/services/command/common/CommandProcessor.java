@@ -20,7 +20,7 @@ public abstract class CommandProcessor {
     @Autowired
     protected ServerResponseParser serverResponseParser;
 
-    public static final String GAMES = "games?";
+    public static final String GAMES = "games";
     public static final String USERS = "users/";
     public static final String PAGE = "page=";
     public static final String ADD_FILTER = "&filter=";

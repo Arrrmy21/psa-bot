@@ -15,7 +15,7 @@ public class GetGameListProcessor extends CommandProcessor {
     public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
 
         StringBuilder getGamesUrlBuilder = new StringBuilder(GAMES);
-        getGamesUrlBuilder.append(PAGE).append(commandLine.getCurPage());
+        getGamesUrlBuilder.append("?").append(PAGE).append(commandLine.getCurPage());
         if (commandLine.getFilter() != null) {
             getGamesUrlBuilder.append(ADD_FILTER).append(commandLine.getFilter().getFilterName());
         }

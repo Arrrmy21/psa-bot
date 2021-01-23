@@ -14,7 +14,7 @@ public class SearchGameProcessor extends CommandProcessor {
     @Override
     public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
 
-        String searchByName = GAMES +
+        String searchByName = GAMES + "?" +
                 PAGE + commandLine.getCurPage() +
                 ADD_FILTER + "name=" + commandLine.getIdToPass();
         String textFromServer = mainServerService.executeByUrl(searchByName, userUpdateData.getUserName());

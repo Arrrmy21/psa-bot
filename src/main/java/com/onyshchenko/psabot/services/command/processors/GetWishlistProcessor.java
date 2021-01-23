@@ -14,7 +14,7 @@ public class GetWishlistProcessor extends CommandProcessor {
     @Override
     public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
 
-        String getWishListUrl = GAMES +
+        String getWishListUrl = GAMES + "?" +
                 PAGE + commandLine.getCurPage() +
                 ADD_FILTER + "userId=" + userUpdateData.getUserId();
         String textFromServer = mainServerService.executeByUrl(getWishListUrl, userUpdateData.getUserName());

@@ -7,6 +7,7 @@ public class GameDto {
     private String releaseDate;
     private String publisher;
     private String url;
+    private boolean inWl;
 
     private Price price;
 
@@ -33,6 +34,10 @@ public class GameDto {
 
     public Price getPrice() {
         return price;
+    }
+
+    public boolean isInWl() {
+        return inWl;
     }
 
     public class Price {
