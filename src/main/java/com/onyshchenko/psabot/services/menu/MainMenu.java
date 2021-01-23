@@ -19,16 +19,7 @@ public class MainMenu extends MenuProvider {
 
     @Override
     public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData,
-                                            UserRequest commandLine) {
-
-        String previousPageData = null;
-        Integer filter = null;
-        if (commandLine != null) {
-            previousPageData = commandLine.getPreviousPageInfo();
-            if (commandLine.getFilter() != null) {
-                filter = commandLine.getFilter().getFilterId();
-            }
-        }
+                                            UserRequest userRequest) {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
@@ -38,16 +29,19 @@ public class MainMenu extends MenuProvider {
                 .addCommand(GAMESMENU.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         String cabinetMenuCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(CABINET.getId())
                 .addId(String.valueOf(userUpdateData.getUserId()))
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         row1.add(new InlineKeyboardButton().setText("Games menu").setCallbackData(gamesMenuCallback));
         row1.add(new InlineKeyboardButton().setText("My cabinet").setCallbackData(cabinetMenuCallback));
 
+        String previousPageData = userRequest.getPreviousPageInfo();
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
             ButtonCallbackRequestBuilder previousPageDataBuilder = new ButtonCallbackRequestBuilder();
@@ -55,8 +49,9 @@ public class MainMenu extends MenuProvider {
                 previousPageDataBuilder.addCommand(GETGAMES.getId());
                 previousPageDataBuilder.addCurrentPage(previousPageDataList[1]);
                 previousPageDataBuilder.addPreviousPage(previousPageDataList[1]);
-                if (filter != null) {
-                    previousPageDataBuilder.addFilter(filter);
+
+                if (userRequest.getFilter() != null) {
+                    previousPageDataBuilder.addFilter(userRequest.getFilter().getFilterId());
                 }
             } else {
                 previousPageDataBuilder.addCommand(GETWL.getId());
@@ -64,6 +59,7 @@ public class MainMenu extends MenuProvider {
                 previousPageDataBuilder.addAdditionalParams(previousPageDataList[1]);
             }
 
+            previousPageDataBuilder.addVersion(userRequest.getVersion());
             row2.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPageDataBuilder.buildRequest()));
         }
 

@@ -26,6 +26,7 @@ public enum StandardResponse {
     GET_WISHLIST("Get wishlist response"),
     SEARCH_GAMES("Get search games result."),
     CONFIRM_DELETE("You really want to delete all games from wishlist?"),
+    VERSION_ERROR("Your previous keyboards in bot are deprecated. \n\nPlease use keyboard below or clear history in bot settings."),
     DEFAULT_REPLY("Default reply.");
 
     private static final String TIP1 = "\nYou can search for games typing \"name: [name of game]\"";

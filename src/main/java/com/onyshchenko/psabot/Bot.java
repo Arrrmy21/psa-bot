@@ -44,7 +44,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(responseExecutor.getMethodToExecute());
         } catch (TelegramApiException e) {
-            LOGGER.info("Telegram APU Exception.");
+            LOGGER.info("Telegram API Exception.");
             e.printStackTrace();
         } catch (Exception ex) {
             LOGGER.info("Unknown exception occurred.");

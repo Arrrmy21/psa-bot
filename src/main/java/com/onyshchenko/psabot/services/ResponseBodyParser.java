@@ -17,23 +17,32 @@ public class ResponseBodyParser {
     public static String convertServerResponseToText(ServerResponse serverResponse) {
 
         if (serverResponse.getTextResponse().equals(StandardResponse.GET_GAME_RESPONSE)) {
+
             return getGameResponse(serverResponse.getResponseBody());
         } else if (serverResponse.getTextResponse().equals(StandardResponse.GET_GAMES_RESPONSE)
                 || serverResponse.getTextResponse().equals(StandardResponse.GET_WISHLIST)
                 || serverResponse.getTextResponse().equals(StandardResponse.SEARCH_GAMES)) {
+
             return getListResponse(serverResponse.getResponseBody());
         } else if (serverResponse.getTextResponse().equals(StandardResponse.GAME_ADDED_TO_WL) ||
                 serverResponse.getTextResponse().equals(StandardResponse.GAME_DELETED_FROM_WL)) {
+
             return serverResponse.getResponseBody().getUniqueText();
         } else if (serverResponse.getTextResponse().equals(StandardResponse.GREETINGS)) {
+
             return StandardResponse.GREETINGS.getTextResponse()
                     .replace("{}", serverResponse.getResponseBody().getUniqueText());
         } else if (serverResponse.getTextResponse().equals(StandardResponse.WELCOME)) {
+
             return StandardResponse.WELCOME.getTextResponse()
                     .replace("{}", serverResponse.getResponseBody().getUniqueText());
         } else if (serverResponse.getTextResponse().equals(StandardResponse.WELCOME_BACK)) {
+
             return StandardResponse.WELCOME_BACK.getTextResponse()
                     .replace("{}", serverResponse.getResponseBody().getUniqueText());
+        } else if (serverResponse.getTextResponse().equals(StandardResponse.VERSION_ERROR)) {
+
+            return StandardResponse.VERSION_ERROR.getTextResponse();
         } else {
             return serverResponse.getTextResponse().getTextResponse();
         }

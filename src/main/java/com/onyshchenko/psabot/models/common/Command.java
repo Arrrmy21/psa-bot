@@ -24,7 +24,8 @@ public enum Command {
     CABINET("cabinet", 9, new PersonalCabinetMenu()),
     SWITCH("switchNotifications", 10, new PersonalCabinetMenu()),
     REGULAR_REPLY("regularReply", 11, new MainMenu()),
-    CONFIRM("confirm", 12, new ConfirmationMenu());
+    CONFIRM("confirm", 12, new ConfirmationMenu()),
+    HELP("help", 20, new MainMenu());
 
 
     private final String commandName;

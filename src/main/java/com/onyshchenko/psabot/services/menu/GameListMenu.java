@@ -51,7 +51,8 @@ public class GameListMenu extends MenuProvider {
             ButtonCallbackRequestBuilder callBackBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(GETGAME.getId())
                     .addId(game.getId())
-                    .addAdditionalParams(current);
+                    .addAdditionalParams(current)
+                    .addVersion(userRequest.getVersion());
             if (userRequest.getFilter() != null) {
                 callBackBuilder.addFilter(userRequest.getFilter().getFilterId());
             }
@@ -66,7 +67,8 @@ public class GameListMenu extends MenuProvider {
             ButtonCallbackRequestBuilder prevPageBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(command.getId())
                     .addPreviousPage(String.valueOf(currentPage))
-                    .addCurrentPage(String.valueOf(prevPage));
+                    .addCurrentPage(String.valueOf(prevPage))
+                    .addVersion(userRequest.getVersion());
             if (userRequest.getFilter() != null) {
                 prevPageBuilder.addFilter(userRequest.getFilter().getFilterId());
             }
@@ -79,14 +81,17 @@ public class GameListMenu extends MenuProvider {
             ButtonCallbackRequestBuilder nextPageBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(command.getId())
                     .addCurrentPage(String.valueOf(nextPage))
-                    .addPreviousPage(String.valueOf(currentPage));
+                    .addPreviousPage(String.valueOf(currentPage))
+                    .addVersion(userRequest.getVersion());
             if (userRequest.getFilter() != null) {
                 nextPageBuilder.addFilter(userRequest.getFilter().getFilterId());
             }
             row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageBuilder.buildRequest()));
         }
-
-        row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(GREETINGS_COMMAND));
+        String greetingsCommandCallBack = new ButtonCallbackRequestBuilder().addCommand(3)
+                .addVersion(userRequest.getVersion())
+                .buildRequest();
+        row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);
@@ -98,6 +103,7 @@ public class GameListMenu extends MenuProvider {
             String clearWishlistCallback = new ButtonCallbackRequestBuilder()
                     .addCommand(CONFIRM.getId())
                     .addId(userUpdateData.getUserId() + "/" + "all")
+                    .addVersion(userRequest.getVersion())
                     .buildRequest();
             row5.add(new InlineKeyboardButton().setText("Clear wish list").setCallbackData(clearWishlistCallback));
             keyboard.add(row5);

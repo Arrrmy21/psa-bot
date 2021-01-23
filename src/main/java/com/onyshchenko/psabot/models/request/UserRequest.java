@@ -15,6 +15,8 @@ public class UserRequest {
     private String previousPageInfo;
     @JsonProperty("f")
     private Filter filter;
+    @JsonProperty("v")
+    private String version;
 
     public UserRequest() {
     }
@@ -66,6 +68,18 @@ public class UserRequest {
 
     public void setPreviousPageInfo(String previousPageInfo) {
         this.previousPageInfo = previousPageInfo;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public Filter getFilter() {

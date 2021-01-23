@@ -20,13 +20,13 @@ import static com.onyshchenko.psabot.models.common.Command.GETWL;
 public class GameMenu extends MenuProvider {
 
     @Override
-    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest commandLine) {
+    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest userRequest) {
 
         String baseUrl = "https://store.playstation.com/ru-ua/product/";
 
         Integer filter = null;
-        if (commandLine.getFilter() != null) {
-            filter = commandLine.getFilter().getFilterId();
+        if (userRequest.getFilter() != null) {
+            filter = userRequest.getFilter().getFilterId();
         }
 
         ResponseBody responseBody = (ResponseBody) uniqueObject;
@@ -43,13 +43,14 @@ public class GameMenu extends MenuProvider {
 
         List<InlineKeyboardButton> row2 = new ArrayList<>();
 
-        String previousPageData = commandLine.getPreviousPageInfo();
+        String previousPageData = userRequest.getPreviousPageInfo();
 
         if (!isGameInWishList) {
             ButtonCallbackRequestBuilder addToWithListTextBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(ADDTOWL.getId())
                     .addId(userUpdateData.getUserId() + "/" + gameId)
-                    .addAdditionalParams(previousPageData);
+                    .addAdditionalParams(previousPageData)
+                    .addVersion(userRequest.getVersion());
 
             if (filter != null) {
                 addToWithListTextBuilder.addFilter(filter);
@@ -61,7 +62,8 @@ public class GameMenu extends MenuProvider {
             ButtonCallbackRequestBuilder deleteFromWithListBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(CLEARWL.getId())
                     .addId(userUpdateData.getUserId() + "/" + gameId)
-                    .addAdditionalParams(previousPageData);
+                    .addAdditionalParams(previousPageData)
+                    .addVersion(userRequest.getVersion());
 
             if (filter != null) {
                 deleteFromWithListBuilder.addFilter(filter);
@@ -72,7 +74,10 @@ public class GameMenu extends MenuProvider {
         }
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
-        row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(GREETINGS_COMMAND));
+        String greetingsCommandCallBack = new ButtonCallbackRequestBuilder().addCommand(3)
+                .addVersion(userRequest.getVersion())
+                .buildRequest();
+        row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
@@ -91,7 +96,7 @@ public class GameMenu extends MenuProvider {
                 if (filter != null) {
                     previousPageBuilder.addFilter(filter);
                 }
-
+                previousPageBuilder.addVersion(userRequest.getVersion());
                 String previousPage = previousPageBuilder.buildRequest();
                 row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
             }

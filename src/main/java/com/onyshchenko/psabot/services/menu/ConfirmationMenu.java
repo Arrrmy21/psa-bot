@@ -16,7 +16,7 @@ import static com.onyshchenko.psabot.models.common.Command.GETWL;
 public class ConfirmationMenu extends MenuProvider {
 
     @Override
-    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest commandLine) {
+    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest userRequest) {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
@@ -25,16 +25,21 @@ public class ConfirmationMenu extends MenuProvider {
         String clear = new ButtonCallbackRequestBuilder()
                 .addCommand(CLEARWL.getId())
                 .addId(userUpdateData.getUserId() + "/" + "all")
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         String wishListCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETWL.getId())
                 .addAdditionalParams(userUpdateData.getUserId())
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         row1.add(new InlineKeyboardButton().setText("Yes").setCallbackData(clear));
         row1.add(new InlineKeyboardButton().setText("No").setCallbackData(wishListCallback));
-        row2.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(GREETINGS_COMMAND));
+        String greetingsCommandCallBack = new ButtonCallbackRequestBuilder().addCommand(3)
+                .addVersion(userRequest.getVersion())
+                .buildRequest();
+        row2.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);

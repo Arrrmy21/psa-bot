@@ -16,7 +16,7 @@ import static com.onyshchenko.psabot.models.common.Command.GETGAMES;
 public class GameSearchMenu extends MenuProvider {
 
     @Override
-    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest commandLine) {
+    public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest userRequest) {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
@@ -30,12 +30,14 @@ public class GameSearchMenu extends MenuProvider {
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
                 .addFilter(UserRequest.Filter.DISCOUNT_FILTER.getFilterId())
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         String allGamesCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETGAMES.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         String freeGamesCallback = new ButtonCallbackRequestBuilder()
@@ -43,10 +45,12 @@ public class GameSearchMenu extends MenuProvider {
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
                 .addFilter(UserRequest.Filter.FREE_GAMES_FILTER.getFilterId())
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         String greetings = new ButtonCallbackRequestBuilder()
                 .addCommand(Command.GREETINGS.getId())
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         row1.add(new InlineKeyboardButton().setText("Games with discount").setCallbackData(gamesWithDiscountCallback));

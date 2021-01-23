@@ -36,7 +36,8 @@ public class ResponseExecutor {
 
         if (userRequest.getCommand().equals(Command.REGISTERUSER)
                 || userRequest.getCommand().equals(Command.SEARCH) || userRequest.getCommand().equals(Command.GETWL)
-                || userRequest.getCommand().equals(Command.GETGAME)) {
+                || userRequest.getCommand().equals(Command.GETGAME)
+                || userRequest.getCommand().equals(Command.HELP)) {
             responseMessage = new SendMessage();
             responseMessage.setChatId(userUpdateData.getChatId());
             responseMessage.setText(textForReply);

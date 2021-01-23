@@ -10,6 +10,7 @@ import com.onyshchenko.psabot.services.command.processors.GamesMenuProcessor;
 import com.onyshchenko.psabot.services.command.processors.GetGameProcessor;
 import com.onyshchenko.psabot.services.command.processors.GetWishlistProcessor;
 import com.onyshchenko.psabot.services.command.processors.GreetingsProcessor;
+import com.onyshchenko.psabot.services.command.processors.HelpProcessor;
 import com.onyshchenko.psabot.services.command.processors.RegisterUserProcessor;
 import com.onyshchenko.psabot.services.command.processors.SearchGameProcessor;
 import com.onyshchenko.psabot.services.command.processors.SwitchNotificationsProcessor;
@@ -52,6 +53,8 @@ public class CommandProcessorFactory {
     private DefaultProcessor defaultProcessor;
     @Autowired
     private ConfirmationProcessor confirmationProcessor;
+    @Autowired
+    private HelpProcessor helpProcessor;
 
     private static final EnumMap<Command, CommandProcessor> handler = new EnumMap<>(Command.class);
 
@@ -70,6 +73,7 @@ public class CommandProcessorFactory {
         handler.put(Command.SWITCH, switchNotificationsProcessor);
         handler.put(Command.REGULAR_REPLY, defaultProcessor);
         handler.put(Command.CONFIRM, confirmationProcessor);
+        handler.put(Command.HELP, helpProcessor);
 
         return handler;
     }

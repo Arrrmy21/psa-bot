@@ -9,6 +9,7 @@ public class ButtonCallbackRequestBuilder {
     private static final String FILTER = ",\"f\":\"";
     private static final String ID = ",\"id\":\"";
     private static final String ADD = ",\"add\":\"";
+    private static final String VERSION = ",\"v\":\"";
 
     public ButtonCallbackRequestBuilder() {
         stringBuilder = new StringBuilder("{");
@@ -41,6 +42,11 @@ public class ButtonCallbackRequestBuilder {
 
     public ButtonCallbackRequestBuilder addAdditionalParams(Object add) {
         this.stringBuilder.append(ADD).append(add).append("\"");
+        return this;
+    }
+
+    public ButtonCallbackRequestBuilder addVersion(String version) {
+        this.stringBuilder.append(VERSION).append(version).append("\"");
         return this;
     }
 

@@ -18,7 +18,7 @@ public class PersonalCabinetMenu extends MenuProvider {
 
     @Override
     public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData,
-                                            UserRequest commandLine) {
+                                            UserRequest userRequest) {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
@@ -28,6 +28,7 @@ public class PersonalCabinetMenu extends MenuProvider {
         String wishListCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETWL.getId())
                 .addAdditionalParams(userUpdateData.getUserId())
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         ResponseBody responseBody = (ResponseBody) uniqueObject;
@@ -44,11 +45,16 @@ public class PersonalCabinetMenu extends MenuProvider {
         String switchNotificationStatusCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(Command.SWITCH.getId())
                 .addAdditionalParams(switchStatusCommand)
+                .addVersion(userRequest.getVersion())
                 .buildRequest();
 
         row1.add(new InlineKeyboardButton().setText(notificationButtonName).setCallbackData(switchNotificationStatusCallback));
         row2.add(new InlineKeyboardButton().setText("Wishlist").setCallbackData(wishListCallback));
-        row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(GREETINGS_COMMAND));
+        String greetingsCommandCallBack = new ButtonCallbackRequestBuilder()
+                .addCommand(3)
+                .addVersion(userRequest.getVersion())
+                .buildRequest();
+        row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);
