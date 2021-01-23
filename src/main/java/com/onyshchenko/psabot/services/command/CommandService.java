@@ -41,7 +41,7 @@ public class CommandService {
                 LOGGER.info("Failed to encode name for filter");
             }
 
-            return new UserRequest(Command.SEARCH, encodedUrl);
+            return new UserRequest(Command.SEARCH, encodedUrl, version);
         }
         try {
             userRequest = new ObjectMapper().readValue(data, UserRequest.class);

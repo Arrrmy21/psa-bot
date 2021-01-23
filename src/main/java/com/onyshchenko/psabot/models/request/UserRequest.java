@@ -25,9 +25,10 @@ public class UserRequest {
         this.command = cmd;
     }
 
-    public UserRequest(Command cmd, String id) {
+    public UserRequest(Command cmd, String id, String version) {
         this.command = cmd;
         this.idToPass = id;
+        this.version = version;
     }
 
     public Command getCommand() {
