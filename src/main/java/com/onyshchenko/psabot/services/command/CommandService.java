@@ -25,9 +25,15 @@ public class CommandService {
 
         UserRequest userRequest;
         if (data.equalsIgnoreCase("/start")) {
-            return new UserRequest(Command.REGISTERUSER);
+            userRequest = new UserRequest(Command.REGISTERUSER);
+            userRequest.setVersion(version);
+
+            return userRequest;
         } else if (data.equalsIgnoreCase("/wishlist")) {
-            return new UserRequest((Command.GETWL));
+            userRequest = new UserRequest((Command.GETWL));
+            userRequest.setVersion(version);
+
+            return userRequest;
         } else if (data.contains("Name:") || data.contains("name:")) {
             String nameOfGame = data.substring(5);
             while (nameOfGame.startsWith(" ")) {
