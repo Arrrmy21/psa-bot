@@ -13,6 +13,8 @@ public class HelpProcessor extends CommandProcessor {
     @Override
     public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
 
+        mainServerService.registerUser(userUpdateData.getUser());
+
         return new ServerResponse(StandardResponse.VERSION_ERROR);
     }
 }
