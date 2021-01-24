@@ -20,6 +20,7 @@ public class CommandService {
     private String version;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandService.class);
+    ObjectMapper objectMapper = new ObjectMapper();
 
     public UserRequest prepareUserRequestFromRequestData(String data) {
 
@@ -50,7 +51,8 @@ public class CommandService {
             return new UserRequest(Command.SEARCH, encodedUrl, version);
         }
         try {
-            userRequest = new ObjectMapper().readValue(data, UserRequest.class);
+            String convertedData = convertStringDataToJson(data);
+            userRequest = objectMapper.readValue(convertedData, UserRequest.class);
 
             if (userRequest.getVersion() == null || !userRequest.getVersion().equalsIgnoreCase(version)) {
                 LOGGER.info("Version of user's keyboard differs from server's.");
@@ -62,6 +64,22 @@ public class CommandService {
         }
 
         return userRequest;
+    }
+
+    private String convertStringDataToJson(String data) {
+        StringBuilder sb = new StringBuilder("{");
+        String[] array = data.split(",");
+        for (int keyPair = 0; keyPair < array.length; keyPair++) {
+            String value = array[keyPair];
+            String[] keyValue = value.split(":");
+            sb.append("\"").append(keyValue[0]).append("\"")
+                    .append(":")
+                    .append("\"").append(keyValue[1]).append("\"");
+            if (keyPair != array.length - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.append("}").toString();
     }
 
     private void redirectUserToMainMenu(UserRequest requestFromUser) {
