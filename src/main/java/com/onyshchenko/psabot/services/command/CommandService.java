@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onyshchenko.psabot.models.request.UserRequest;
 import com.onyshchenko.psabot.models.common.Command;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +53,13 @@ public class CommandService {
             return new UserRequest(Command.SEARCH, encodedUrl, version);
         }
         try {
+            boolean isDataNew = validateRequestIsNotDeprecatedJson(data);
+            if (!isDataNew) {
+                UserRequest request = new UserRequest(Command.HELP);
+                request.setVersion(version);
+
+                return request;
+            }
             String convertedData = convertStringDataToJson(data);
             userRequest = objectMapper.readValue(convertedData, UserRequest.class);
 
@@ -64,6 +73,15 @@ public class CommandService {
         }
 
         return userRequest;
+    }
+
+    private boolean validateRequestIsNotDeprecatedJson(String data) {
+        try {
+            new JSONObject(data);
+            return false;
+        } catch (JSONException ex) {
+            return true;
+        }
     }
 
     private String convertStringDataToJson(String data) {
