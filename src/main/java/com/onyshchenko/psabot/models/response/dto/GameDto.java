@@ -1,5 +1,8 @@
 package com.onyshchenko.psabot.models.response.dto;
 
+import java.util.List;
+
+
 public class GameDto {
 
     private String name;
@@ -8,6 +11,10 @@ public class GameDto {
     private String publisher;
     private String url;
     private boolean inWl;
+    private boolean exclusive;
+    private boolean eaAccess;
+    private List<String> genres;
+    private String category;
 
     private Price price;
 
@@ -40,6 +47,22 @@ public class GameDto {
         return inWl;
     }
 
+    public boolean isExclusive() {
+        return exclusive;
+    }
+
+    public boolean isEaAccess() {
+        return eaAccess;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
     public class Price {
 
         private String currentPrice;
@@ -47,6 +70,8 @@ public class GameDto {
         private String lowestPrice;
         private String highestPrice;
         private String highestDiscount;
+        private String currentPercentageDiscount;
+        private String currentPsPlusPrice;
 
         public String getCurrentPrice() {
             return currentPrice;
@@ -66,6 +91,14 @@ public class GameDto {
 
         public String getHighestDiscount() {
             return highestDiscount;
+        }
+
+        public String getCurrentPercentageDiscount() {
+            return currentPercentageDiscount;
+        }
+
+        public String getCurrentPsPlusPrice() {
+            return currentPsPlusPrice;
         }
     }
 }

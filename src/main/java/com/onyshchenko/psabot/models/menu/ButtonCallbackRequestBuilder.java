@@ -3,6 +3,8 @@ package com.onyshchenko.psabot.models.menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class ButtonCallbackRequestBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ButtonCallbackRequestBuilder.class);
@@ -35,7 +37,12 @@ public class ButtonCallbackRequestBuilder {
         return this;
     }
 
-    public ButtonCallbackRequestBuilder addFilter(int filter) {
+    public ButtonCallbackRequestBuilder addFilters(List<Integer> filter) {
+        filter.forEach(f -> this.stringBuilder.append(FILTER).append(f));
+        return this;
+    }
+
+    public ButtonCallbackRequestBuilder addFilter(Integer filter) {
         this.stringBuilder.append(FILTER).append(filter);
         return this;
     }
@@ -59,8 +66,8 @@ public class ButtonCallbackRequestBuilder {
         String buttonCallBack = stringBuilder.toString();
         int callbackLength = buttonCallBack.length();
         if (callbackLength > 64) {
-            LOGGER.info("Prohibited callback length [{}].", callbackLength);
-            LOGGER.info("Callback data: [{}]", buttonCallBack);
+            LOGGER.error("Prohibited callback length [{}].", callbackLength);
+            LOGGER.error("Callback data: [{}]", buttonCallBack);
         }
         return buttonCallBack;
     }

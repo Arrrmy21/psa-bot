@@ -24,9 +24,9 @@ public class GameMenu extends MenuProvider {
 
         String baseUrl = "https://store.playstation.com/ru-ua/product/";
 
-        Integer filter = null;
-        if (userRequest.getFilter() != null) {
-            filter = userRequest.getFilter().getFilterId();
+        List<Integer> filters = null;
+        if (userRequest.getFilters() != null) {
+            filters = userRequest.getFilterIds();
         }
 
         ResponseBody responseBody = (ResponseBody) uniqueObject;
@@ -52,8 +52,8 @@ public class GameMenu extends MenuProvider {
                     .addAdditionalParams(previousPageData)
                     .addVersion(userRequest.getVersion());
 
-            if (filter != null) {
-                addToWithListTextBuilder.addFilter(filter);
+            if (filters != null) {
+                addToWithListTextBuilder.addFilters(filters);
             }
             String addToWithListText = addToWithListTextBuilder.buildRequest();
 
@@ -65,8 +65,8 @@ public class GameMenu extends MenuProvider {
                     .addAdditionalParams(previousPageData)
                     .addVersion(userRequest.getVersion());
 
-            if (filter != null) {
-                deleteFromWithListBuilder.addFilter(filter);
+            if (filters != null) {
+                deleteFromWithListBuilder.addFilters(filters);
             }
             String deleteFromWithListText = deleteFromWithListBuilder.buildRequest();
             row2.add(new InlineKeyboardButton().setText("Delete from wishList")
@@ -93,8 +93,8 @@ public class GameMenu extends MenuProvider {
                 previousPageBuilder.addCurrentPage(previousPageDataList[1])
                         .addPreviousPage(previousPageDataList[1]);
 
-                if (filter != null) {
-                    previousPageBuilder.addFilter(filter);
+                if (filters != null) {
+                    previousPageBuilder.addFilters(filters);
                 }
                 previousPageBuilder.addVersion(userRequest.getVersion());
                 String previousPage = previousPageBuilder.buildRequest();

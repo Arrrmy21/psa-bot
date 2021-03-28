@@ -1,5 +1,6 @@
 package com.onyshchenko.psabot.services.command.processors;
 
+import com.onyshchenko.psabot.models.common.Command;
 import com.onyshchenko.psabot.models.request.UserRequest;
 import com.onyshchenko.psabot.models.response.ServerResponse;
 import com.onyshchenko.psabot.models.common.StandardResponse;
@@ -11,8 +12,12 @@ import org.springframework.stereotype.Service;
 public class GamesMenuProcessor extends CommandProcessor {
 
     @Override
-    public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
+    public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest userRequest) {
 
-        return new ServerResponse(StandardResponse.GAMES_MENU);
+        if (userRequest.getCommand().equals(Command.GAMESMENU)) {
+            return new ServerResponse(StandardResponse.GAMES_MENU);
+        } else {
+            return new ServerResponse(StandardResponse.OTHER_PRODUCTS_MENU);
+        }
     }
 }

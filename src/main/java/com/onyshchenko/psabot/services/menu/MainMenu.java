@@ -14,6 +14,7 @@ import static com.onyshchenko.psabot.models.common.Command.CABINET;
 import static com.onyshchenko.psabot.models.common.Command.GAMESMENU;
 import static com.onyshchenko.psabot.models.common.Command.GETGAMES;
 import static com.onyshchenko.psabot.models.common.Command.GETWL;
+import static com.onyshchenko.psabot.models.common.Command.OTHER_PRODUCTS_MENU;
 
 public class MainMenu extends MenuProvider {
 
@@ -24,6 +25,7 @@ public class MainMenu extends MenuProvider {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
 
         String gamesMenuCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GAMESMENU.getId())
@@ -38,8 +40,16 @@ public class MainMenu extends MenuProvider {
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
 
+        String otherProductsCallBack = new ButtonCallbackRequestBuilder()
+                .addCommand(OTHER_PRODUCTS_MENU.getId())
+                .addCurrentPage(String.valueOf(0))
+                .addPreviousPage(String.valueOf(0))
+                .addVersion(userRequest.getVersion())
+                .buildRequest();
+
         row1.add(new InlineKeyboardButton().setText("Games menu").setCallbackData(gamesMenuCallback));
-        row1.add(new InlineKeyboardButton().setText("My cabinet").setCallbackData(cabinetMenuCallback));
+        row2.add(new InlineKeyboardButton().setText("Other products menu").setCallbackData(otherProductsCallBack));
+        row3.add(new InlineKeyboardButton().setText("My cabinet").setCallbackData(cabinetMenuCallback));
 
         String previousPageData = userRequest.getPreviousPageInfo();
         if (previousPageData != null) {
@@ -50,8 +60,8 @@ public class MainMenu extends MenuProvider {
                 previousPageDataBuilder.addCurrentPage(previousPageDataList[1]);
                 previousPageDataBuilder.addPreviousPage(previousPageDataList[1]);
 
-                if (userRequest.getFilter() != null) {
-                    previousPageDataBuilder.addFilter(userRequest.getFilter().getFilterId());
+                if (userRequest.getFilters() != null) {
+                    previousPageDataBuilder.addFilters(userRequest.getFilterIds());
                 }
             } else {
                 previousPageDataBuilder.addCommand(GETWL.getId());
@@ -60,12 +70,13 @@ public class MainMenu extends MenuProvider {
             }
 
             previousPageDataBuilder.addVersion(userRequest.getVersion());
-            row2.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPageDataBuilder.buildRequest()));
+            row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPageDataBuilder.buildRequest()));
         }
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboard.add(row1);
         keyboard.add(row2);
+        keyboard.add(row3);
         keyboardMarkup.setKeyboard(keyboard);
 
         return keyboardMarkup;

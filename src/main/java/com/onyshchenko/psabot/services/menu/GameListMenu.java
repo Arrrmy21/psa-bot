@@ -53,8 +53,8 @@ public class GameListMenu extends MenuProvider {
                     .addId(game.getId())
                     .addAdditionalParams(current)
                     .addVersion(userRequest.getVersion());
-            if (userRequest.getFilter() != null) {
-                callBackBuilder.addFilter(userRequest.getFilter().getFilterId());
+            if (userRequest.getFilters() != null) {
+                callBackBuilder.addFilters(userRequest.getFilterIds());
             }
             if (buttonName <= 5) {
                 row1.add(new InlineKeyboardButton().setText(String.valueOf(buttonName)).setCallbackData(callBackBuilder.buildRequest()));
@@ -69,8 +69,8 @@ public class GameListMenu extends MenuProvider {
                     .addPreviousPage(String.valueOf(currentPage))
                     .addCurrentPage(String.valueOf(prevPage))
                     .addVersion(userRequest.getVersion());
-            if (userRequest.getFilter() != null) {
-                prevPageBuilder.addFilter(userRequest.getFilter().getFilterId());
+            if (userRequest.getFilters() != null) {
+                prevPageBuilder.addFilters(userRequest.getFilterIds());
             }
             row3.add(new InlineKeyboardButton().setText("Previous page").setCallbackData(prevPageBuilder.buildRequest()));
         }
@@ -83,8 +83,8 @@ public class GameListMenu extends MenuProvider {
                     .addCurrentPage(String.valueOf(nextPage))
                     .addPreviousPage(String.valueOf(currentPage))
                     .addVersion(userRequest.getVersion());
-            if (userRequest.getFilter() != null) {
-                nextPageBuilder.addFilter(userRequest.getFilter().getFilterId());
+            if (userRequest.getFilters() != null) {
+                nextPageBuilder.addFilters(userRequest.getFilterIds());
             }
             row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageBuilder.buildRequest()));
         }

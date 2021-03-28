@@ -3,6 +3,10 @@ package com.onyshchenko.psabot.models.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.onyshchenko.psabot.models.common.Command;
 
+import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserRequest {
 
     @JsonProperty("cmd")
@@ -14,7 +18,7 @@ public class UserRequest {
     @JsonProperty("add")
     private String previousPageInfo;
     @JsonProperty("f")
-    private Filter filter;
+    private Set<Filter> filter;
     @JsonProperty("v")
     private String version;
 
@@ -71,7 +75,7 @@ public class UserRequest {
         this.previousPageInfo = previousPageInfo;
     }
 
-    public void setFilter(Filter filter) {
+    public void setFilter(Set<Filter> filter) {
         this.filter = filter;
     }
 
@@ -83,14 +87,20 @@ public class UserRequest {
         this.version = version;
     }
 
-    public Filter getFilter() {
+    public Set<Filter> getFilters() {
         return filter;
     }
+    public List<Integer> getFilterIds() {
+        return filter.stream().map(Filter::getFilterId).collect(Collectors.toList());
+    }
+
 
     public enum Filter {
 
         DISCOUNT_FILTER("disc%3E00", 0),
-        FREE_GAMES_FILTER("price=00", 1);
+        FREE_GAMES_FILTER("price=00", 1),
+        GAMES_FILTER("category=games", 2),
+        OTHER_PRODUCTS_FILTER("category=otherProducts", 3);
 
         private final String filterName;
         private final int filterId;

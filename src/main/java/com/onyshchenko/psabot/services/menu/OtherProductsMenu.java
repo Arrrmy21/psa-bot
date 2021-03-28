@@ -1,8 +1,8 @@
 package com.onyshchenko.psabot.services.menu;
 
-import com.onyshchenko.psabot.models.request.UserRequest;
-import com.onyshchenko.psabot.models.menu.ButtonCallbackRequestBuilder;
 import com.onyshchenko.psabot.models.common.Command;
+import com.onyshchenko.psabot.models.menu.ButtonCallbackRequestBuilder;
+import com.onyshchenko.psabot.models.request.UserRequest;
 import com.onyshchenko.psabot.models.user.UserUpdateData;
 import com.onyshchenko.psabot.services.menu.common.MenuProvider;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -16,9 +16,9 @@ import java.util.List;
 import static com.onyshchenko.psabot.models.common.Command.GETGAMES;
 import static com.onyshchenko.psabot.models.request.UserRequest.Filter.DISCOUNT_FILTER;
 import static com.onyshchenko.psabot.models.request.UserRequest.Filter.FREE_GAMES_FILTER;
-import static com.onyshchenko.psabot.models.request.UserRequest.Filter.GAMES_FILTER;
+import static com.onyshchenko.psabot.models.request.UserRequest.Filter.OTHER_PRODUCTS_FILTER;
 
-public class GameSearchMenu extends MenuProvider {
+public class OtherProductsMenu extends MenuProvider {
 
     @Override
     public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest userRequest) {
@@ -30,32 +30,31 @@ public class GameSearchMenu extends MenuProvider {
         List<InlineKeyboardButton> row4 = new ArrayList<>();
 
 
-        String gamesWithDiscountCallback = new ButtonCallbackRequestBuilder()
+        String productsWithDiscountCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETGAMES.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
                 .addFilters(Arrays.asList(
                         DISCOUNT_FILTER.getFilterId(),
-                        GAMES_FILTER.getFilterId()))
+                        OTHER_PRODUCTS_FILTER.getFilterId()))
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
 
-        String allGamesCallback = new ButtonCallbackRequestBuilder()
+        String allProductsCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETGAMES.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
-                .addFilters(Collections.singletonList(
-                        GAMES_FILTER.getFilterId()))
+                .addFilters(Collections.singletonList(OTHER_PRODUCTS_FILTER.getFilterId()))
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
 
-        String freeGamesCallback = new ButtonCallbackRequestBuilder()
+        String freeProductsCallback = new ButtonCallbackRequestBuilder()
                 .addCommand(GETGAMES.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
                 .addFilters(Arrays.asList(
                         FREE_GAMES_FILTER.getFilterId(),
-                        GAMES_FILTER.getFilterId()))
+                        OTHER_PRODUCTS_FILTER.getFilterId()))
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
 
@@ -64,9 +63,9 @@ public class GameSearchMenu extends MenuProvider {
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
 
-        row1.add(new InlineKeyboardButton().setText("Games with discount").setCallbackData(gamesWithDiscountCallback));
-        row2.add(new InlineKeyboardButton().setText("Free games").setCallbackData(freeGamesCallback));
-        row3.add(new InlineKeyboardButton().setText("All games").setCallbackData(allGamesCallback));
+        row1.add(new InlineKeyboardButton().setText("Products with discount").setCallbackData(productsWithDiscountCallback));
+        row2.add(new InlineKeyboardButton().setText("Free products").setCallbackData(freeProductsCallback));
+        row3.add(new InlineKeyboardButton().setText("All products").setCallbackData(allProductsCallback));
         row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetings));
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();

@@ -23,7 +23,7 @@ public class JsonContentParser implements ServerResponseParser {
     @Override
     public ResponseBody parseResponseBody(String data) {
 
-        if (data == null || data.equalsIgnoreCase("null")){
+        if (data == null || data.equalsIgnoreCase("null")) {
             return new ResponseBody();
         }
         JSONObject jsonObject = new JSONObject(data);

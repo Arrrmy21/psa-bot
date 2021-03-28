@@ -55,11 +55,12 @@ public class ResponseBodyParser {
 
         return game.getName() + "\n\n" +
                 "Current price: " + price.getCurrentPrice() + "\n" +
-                "Current discount: " + price.getCurrentDiscount() + "\n\n" +
+                "Current discount: " + price.getCurrentPercentageDiscount() + "%" + "\n\n" +
                 "Release date: " + game.getReleaseDate() + "\n" +
                 "Lowest price: " + price.getLowestPrice() + "\n" +
-                "Highest price: " + price.getHighestPrice() + "\n" +
-                "Publisher: " + game.getPublisher() + "\n";
+                "Highest price: " + price.getHighestPrice() + "\n\n" +
+                "Publisher: " + game.getPublisher() + "\n" +
+                "Genres: " + game.getGenres() + "\n";
     }
 
     private static String getListResponse(ResponseBody responseBody) {
@@ -75,11 +76,13 @@ public class ResponseBodyParser {
         int position = 1;
         for (GameDto game : gameList) {
             GameDto.Price price = game.getPrice();
+
             sb.append(position).append(") ");
-            sb.append(game.getName()).append("\nPrice: ");
-            sb.append(price.getCurrentPrice()).append("\nCurrent discount: ");
-            sb.append(price.getCurrentDiscount()).append("\nHighest discount: ");
-            sb.append(price.getHighestDiscount()).append("\n\n");
+            sb.append(game.getName());
+
+            sb.append("\nPrice: ").append(price.getCurrentPrice());
+            sb.append("\nCurrent discount: ").append(price.getCurrentPercentageDiscount()).append("%");
+            sb.append("\nCategory: ").append(game.getCategory()).append("\n\n");
             position++;
         }
 

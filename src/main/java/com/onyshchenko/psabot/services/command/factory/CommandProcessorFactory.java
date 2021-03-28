@@ -73,6 +73,7 @@ public class CommandProcessorFactory {
         handler.put(Command.SWITCH, switchNotificationsProcessor);
         handler.put(Command.REGULAR_REPLY, defaultProcessor);
         handler.put(Command.CONFIRM, confirmationProcessor);
+        handler.put(Command.OTHER_PRODUCTS_MENU, gamesMenuProcessor);
         handler.put(Command.HELP, helpProcessor);
 
         return handler;

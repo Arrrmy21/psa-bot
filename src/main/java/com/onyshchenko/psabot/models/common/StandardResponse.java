@@ -16,6 +16,7 @@ public enum StandardResponse {
     WELCOME("Welcome, {}.\nYou can search for games typing \"name: [name of game]\"\nexample:\nname: Mafia"),
     WELCOME_BACK("Welcome back, {}.\nYou can search for games typing \"name: [name of game]\"\nexample:\nname: Mafia"),
     GAMES_MENU("Games menu"),
+    OTHER_PRODUCTS_MENU("Other products menu"),
     TURN_ON_NOTIFICATIONS("ON"),
     TURN_OFF_NOTIFICATIONS("OFF"),
     GAME_ADDED_TO_WL("Game added to wish list"),

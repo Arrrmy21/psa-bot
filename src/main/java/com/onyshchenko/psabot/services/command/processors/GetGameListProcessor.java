@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 public class GetGameListProcessor extends CommandProcessor {
 
     @Override
-    public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest commandLine) {
+    public ServerResponse getMainServerResponse(UserUpdateData userUpdateData, UserRequest userRequest) {
 
         StringBuilder getGamesUrlBuilder = new StringBuilder(GAMES);
-        getGamesUrlBuilder.append("?").append(PAGE).append(commandLine.getCurPage());
-        if (commandLine.getFilter() != null) {
-            getGamesUrlBuilder.append(ADD_FILTER).append(commandLine.getFilter().getFilterName());
+        getGamesUrlBuilder.append("?").append(PAGE).append(userRequest.getCurPage());
+        if (userRequest.getFilters() != null) {
+            getGamesUrlBuilder.append(ADD_FILTER);
+            userRequest.getFilters().forEach(f -> getGamesUrlBuilder.append(f.getFilterName()).append(","));
+            getGamesUrlBuilder.deleteCharAt(getGamesUrlBuilder.length() - 1);
         }
         String getGamesUrl = getGamesUrlBuilder.toString();
         String textFromServer = "";

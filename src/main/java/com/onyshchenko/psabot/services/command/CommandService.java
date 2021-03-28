@@ -87,15 +87,32 @@ public class CommandService {
     private String convertStringDataToJson(String data) {
         StringBuilder sb = new StringBuilder("{");
         String[] array = data.split(",");
+        int filterCount = 0;
+        StringBuilder filters = new StringBuilder("\"f\":[");
         for (int keyPair = 0; keyPair < array.length; keyPair++) {
             String value = array[keyPair];
             String[] keyValue = value.split(":");
+            if (keyValue[0].equalsIgnoreCase("f")) {
+                if (filterCount > 0) {
+                    filters.append(",");
+                }
+                filters.append("\"").append(keyValue[1]).append("\"");
+                filterCount++;
+                continue;
+            }
             sb.append("\"").append(keyValue[0]).append("\"")
                     .append(":")
                     .append("\"").append(keyValue[1]).append("\"");
             if (keyPair != array.length - 1) {
                 sb.append(",");
             }
+        }
+        if (filterCount > 0) {
+            filters.append("]");
+            if (sb.charAt(sb.length() - 1) != ',') {
+                sb.append(",");
+            }
+            sb.append(filters.toString());
         }
         return sb.append("}").toString();
     }
