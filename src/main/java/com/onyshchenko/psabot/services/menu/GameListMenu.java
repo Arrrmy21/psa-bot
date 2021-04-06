@@ -95,7 +95,7 @@ public class GameListMenu extends MenuProvider {
                 .buildRequest();
         row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
-        if (userRequest.getFilters() != null) {
+        if (userRequest.getFilters() != null && !userRequest.getFilterIds().contains(UserRequest.Filter.PUBLISHER_ID.getFilterId())) {
             int previousMenuFilterId = userRequest.getFilterIds()
                     .contains(UserRequest.Filter.GAMES_FILTER.getFilterId()) ? GAMESMENU.getId() : OTHER_PRODUCTS_MENU.getId();
             String gamesMenuCallback = new ButtonCallbackRequestBuilder()

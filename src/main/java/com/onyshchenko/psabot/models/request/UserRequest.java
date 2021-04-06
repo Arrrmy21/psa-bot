@@ -104,7 +104,9 @@ public class UserRequest {
         OTHER_PRODUCTS_FILTER("category=otherProducts", 3),
         PS_PLUS("psplus=true", 4),
         EA_ACCESS("eaaccess=true", 5),
-        EXCLUSIVE("exclusive=true", 6);
+        EXCLUSIVE("exclusive=true", 6),
+        PUBLISHER("publisher=%s", 7),
+        PUBLISHER_ID("publisherId=%s", 8);
 
         private final String filterName;
         private final int filterId;

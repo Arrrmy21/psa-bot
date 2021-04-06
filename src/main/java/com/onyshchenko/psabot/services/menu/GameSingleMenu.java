@@ -74,10 +74,28 @@ public class GameSingleMenu extends MenuProvider {
         }
 
         List<InlineKeyboardButton> row3 = new ArrayList<>();
+        List<Integer> resultedFilters = new ArrayList<>();
+        if (filters != null) {
+            resultedFilters.addAll(filters);
+        }
+        resultedFilters.add(UserRequest.Filter.PUBLISHER_ID.getFilterId());
+        String otherPublisherGamesCallback = new ButtonCallbackRequestBuilder()
+                .addCommand(GETGAMES.getId())
+                .addCurrentPage(String.valueOf(0))
+                .addPreviousPage(String.valueOf(0))
+                .addVersion(userRequest.getVersion())
+                .addFilters(resultedFilters)
+                .addAdditionalParams(game.getPublisher().getId())
+                .buildRequest();
+        row3.add(new InlineKeyboardButton().setText("Other games of this publisher")
+                .setCallbackData(otherPublisherGamesCallback));
+
+
+        List<InlineKeyboardButton> row4 = new ArrayList<>();
         String greetingsCommandCallBack = new ButtonCallbackRequestBuilder().addCommand(3)
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
-        row3.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
+        row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
 
         if (previousPageData != null) {
             String[] previousPageDataList = previousPageData.split("-");
@@ -98,7 +116,7 @@ public class GameSingleMenu extends MenuProvider {
                 }
                 previousPageBuilder.addVersion(userRequest.getVersion());
                 String previousPage = previousPageBuilder.buildRequest();
-                row3.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
+                row4.add(new InlineKeyboardButton().setText("Back to list").setCallbackData(previousPage));
             }
         }
 
@@ -106,6 +124,7 @@ public class GameSingleMenu extends MenuProvider {
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
+        keyboard.add(row4);
         keyboardMarkup.setKeyboard(keyboard);
 
         return keyboardMarkup;

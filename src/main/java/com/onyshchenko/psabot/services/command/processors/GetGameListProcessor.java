@@ -22,6 +22,9 @@ public class GetGameListProcessor extends CommandProcessor {
             getGamesUrlBuilder.deleteCharAt(getGamesUrlBuilder.length() - 1);
         }
         String getGamesUrl = getGamesUrlBuilder.toString();
+        if (getGamesUrl.contains("publisherId")) {
+            getGamesUrl = getGamesUrl.replace("%s", preparePublisherId(userRequest.getPreviousPageInfo()));
+        }
         String textFromServer = "";
         try {
             textFromServer = mainServerService.executeByUrl(getGamesUrl, userUpdateData.getUserName());
@@ -36,5 +39,11 @@ public class GetGameListProcessor extends CommandProcessor {
         ResponseBody responseBody = serverResponseParser.parseResponseBody(textFromServer);
 
         return new ServerResponse(StandardResponse.GET_GAMES_RESPONSE, responseBody);
+    }
+
+    private String preparePublisherId(String previousPageInfo) {
+        if (previousPageInfo.length() == 1) {
+            return "0" + previousPageInfo;
+        } else return previousPageInfo;
     }
 }

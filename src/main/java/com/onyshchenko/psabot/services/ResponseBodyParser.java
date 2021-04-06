@@ -63,7 +63,7 @@ public class ResponseBodyParser {
         gameResponseBuilder.append("\n\nRelease date: ").append(game.getReleaseDate())
                 .append("\nLowest price: ").append(price.getLowestPrice())
                 .append("\nHighest price: ").append(price.getHighestPrice())
-                .append("\n\nPublisher: ").append(game.getPublisher())
+                .append("\n\nPublisher: ").append(game.getPublisher().getName())
                 .append("\nGenres: ").append(game.getGenres()).append("\n");
         if (game.isEaAccess()) {
             gameResponseBuilder.append("\nGame included in EA Access subscription");

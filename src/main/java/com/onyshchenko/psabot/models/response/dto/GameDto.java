@@ -8,7 +8,7 @@ public class GameDto {
     private String name;
     private String id;
     private String releaseDate;
-    private String publisher;
+    private Publisher publisher;
     private String url;
     private boolean inWl;
     private boolean exclusive;
@@ -27,7 +27,7 @@ public class GameDto {
         return releaseDate;
     }
 
-    public String getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
@@ -99,6 +99,25 @@ public class GameDto {
 
         public int getCurrentPsPlusPrice() {
             return currentPsPlusPrice;
+        }
+    }
+
+    public static class Publisher {
+
+        private long id;
+        private String name;
+        private String searchName;
+
+        public long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSearchName() {
+            return searchName;
         }
     }
 }
