@@ -3,8 +3,8 @@ package com.onyshchenko.psabot.models.common;
 import com.onyshchenko.psabot.services.menu.ConfirmationMenu;
 import com.onyshchenko.psabot.services.menu.OtherProductsMenu;
 import com.onyshchenko.psabot.services.menu.PersonalCabinetMenu;
-import com.onyshchenko.psabot.services.menu.GameMenu;
-import com.onyshchenko.psabot.services.menu.GameSearchMenu;
+import com.onyshchenko.psabot.services.menu.GameSingleMenu;
+import com.onyshchenko.psabot.services.menu.GamesMenu;
 import com.onyshchenko.psabot.services.menu.GameListMenu;
 import com.onyshchenko.psabot.services.menu.MainMenu;
 import com.onyshchenko.psabot.services.menu.common.MenuProvider;
@@ -14,14 +14,14 @@ import java.util.EnumMap;
 public enum Command {
 
     GETGAMES("getGames", 0, new GameListMenu()),
-    GETGAME("getGame", 1, new GameMenu()),
+    GETGAME("getGame", 1, new GameSingleMenu()),
     REGISTERUSER("registerUser", 2, new MainMenu()),
     GREETINGS("hello", 3, new MainMenu()),
     ADDTOWL("addToWishList", 4, new MainMenu()),
     GETWL("getWishList", 5, new GameListMenu()),
     CLEARWL("clearWishList", 6, new MainMenu()),
     SEARCH("searchGame", 7, new GameListMenu()),
-    GAMESMENU("gamesMenu", 8, new GameSearchMenu()),
+    GAMESMENU("gamesMenu", 8, new GamesMenu()),
     CABINET("cabinet", 9, new PersonalCabinetMenu()),
     SWITCH("switchNotifications", 10, new PersonalCabinetMenu()),
     REGULAR_REPLY("regularReply", 11, new MainMenu()),

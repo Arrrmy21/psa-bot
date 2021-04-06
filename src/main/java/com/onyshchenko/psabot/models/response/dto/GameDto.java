@@ -63,17 +63,17 @@ public class GameDto {
         return category;
     }
 
-    public class Price {
+    public static class Price {
 
-        private String currentPrice;
+        private int currentPrice;
         private String currentDiscount;
         private String lowestPrice;
         private String highestPrice;
         private String highestDiscount;
         private String currentPercentageDiscount;
-        private String currentPsPlusPrice;
+        private int currentPsPlusPrice;
 
-        public String getCurrentPrice() {
+        public int getCurrentPrice() {
             return currentPrice;
         }
 
@@ -97,7 +97,7 @@ public class GameDto {
             return currentPercentageDiscount;
         }
 
-        public String getCurrentPsPlusPrice() {
+        public int getCurrentPsPlusPrice() {
             return currentPsPlusPrice;
         }
     }

@@ -17,7 +17,7 @@ import static com.onyshchenko.psabot.models.common.Command.CLEARWL;
 import static com.onyshchenko.psabot.models.common.Command.GETGAMES;
 import static com.onyshchenko.psabot.models.common.Command.GETWL;
 
-public class GameMenu extends MenuProvider {
+public class GameSingleMenu extends MenuProvider {
 
     @Override
     public InlineKeyboardMarkup prepareMenu(Object uniqueObject, UserUpdateData userUpdateData, UserRequest userRequest) {

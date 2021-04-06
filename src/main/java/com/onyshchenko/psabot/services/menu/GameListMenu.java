@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.onyshchenko.psabot.models.common.Command.CONFIRM;
+import static com.onyshchenko.psabot.models.common.Command.GAMESMENU;
 import static com.onyshchenko.psabot.models.common.Command.GETGAME;
+import static com.onyshchenko.psabot.models.common.Command.OTHER_PRODUCTS_MENU;
 
 public class GameListMenu extends MenuProvider {
 
@@ -92,6 +94,18 @@ public class GameListMenu extends MenuProvider {
                 .addVersion(userRequest.getVersion())
                 .buildRequest();
         row4.add(new InlineKeyboardButton().setText(BACK_TO_MAIN_MENU).setCallbackData(greetingsCommandCallBack));
+
+        if (userRequest.getFilters() != null) {
+            int previousMenuFilterId = userRequest.getFilterIds()
+                    .contains(UserRequest.Filter.GAMES_FILTER.getFilterId()) ? GAMESMENU.getId() : OTHER_PRODUCTS_MENU.getId();
+            String gamesMenuCallback = new ButtonCallbackRequestBuilder()
+                    .addCommand(previousMenuFilterId)
+                    .addCurrentPage(String.valueOf(0))
+                    .addPreviousPage(String.valueOf(0))
+                    .addVersion(userRequest.getVersion())
+                    .buildRequest();
+            row4.add(new InlineKeyboardButton().setText("Previous menu").setCallbackData(gamesMenuCallback));
+        }
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);

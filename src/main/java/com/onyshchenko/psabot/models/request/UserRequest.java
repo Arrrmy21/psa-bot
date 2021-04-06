@@ -90,6 +90,7 @@ public class UserRequest {
     public Set<Filter> getFilters() {
         return filter;
     }
+
     public List<Integer> getFilterIds() {
         return filter.stream().map(Filter::getFilterId).collect(Collectors.toList());
     }
@@ -100,7 +101,10 @@ public class UserRequest {
         DISCOUNT_FILTER("disc%3E00", 0),
         FREE_GAMES_FILTER("price=00", 1),
         GAMES_FILTER("category=games", 2),
-        OTHER_PRODUCTS_FILTER("category=otherProducts", 3);
+        OTHER_PRODUCTS_FILTER("category=otherProducts", 3),
+        PS_PLUS("psplus=true", 4),
+        EA_ACCESS("eaaccess=true", 5),
+        EXCLUSIVE("exclusive=true", 6);
 
         private final String filterName;
         private final int filterId;

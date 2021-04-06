@@ -53,14 +53,26 @@ public class ResponseBodyParser {
         GameDto game = responseBody.getGameList().get(0);
         GameDto.Price price = game.getPrice();
 
-        return game.getName() + "\n\n" +
-                "Current price: " + price.getCurrentPrice() + "\n" +
-                "Current discount: " + price.getCurrentPercentageDiscount() + "%" + "\n\n" +
-                "Release date: " + game.getReleaseDate() + "\n" +
-                "Lowest price: " + price.getLowestPrice() + "\n" +
-                "Highest price: " + price.getHighestPrice() + "\n\n" +
-                "Publisher: " + game.getPublisher() + "\n" +
-                "Genres: " + game.getGenres() + "\n";
+        StringBuilder gameResponseBuilder = new StringBuilder(game.getName())
+                .append("\n\nCurrent price: ").append(price.getCurrentPrice())
+                .append("\nCurrent discount: ").append(price.getCurrentPercentageDiscount()).append("%");
+
+        if (price.getCurrentPsPlusPrice() != price.getCurrentPrice()) {
+            gameResponseBuilder.append("\nPrice with PS Plus: ").append(price.getCurrentPsPlusPrice());
+        }
+        gameResponseBuilder.append("\n\nRelease date: ").append(game.getReleaseDate())
+                .append("\nLowest price: ").append(price.getLowestPrice())
+                .append("\nHighest price: ").append(price.getHighestPrice())
+                .append("\n\nPublisher: ").append(game.getPublisher())
+                .append("\nGenres: ").append(game.getGenres()).append("\n");
+        if (game.isEaAccess()) {
+            gameResponseBuilder.append("\nGame included in EA Access subscription");
+        }
+        if (game.isExclusive()) {
+            gameResponseBuilder.append("\nGame is exclusive for PS platform");
+        }
+
+        return gameResponseBuilder.toString();
     }
 
     private static String getListResponse(ResponseBody responseBody) {
@@ -82,7 +94,7 @@ public class ResponseBodyParser {
 
             sb.append("\nPrice: ").append(price.getCurrentPrice());
             sb.append("\nCurrent discount: ").append(price.getCurrentPercentageDiscount()).append("%");
-            sb.append("\nCategory: ").append(game.getCategory()).append("\n\n");
+            sb.append("\nCategory: ").append(game.getCategory().toLowerCase()).append("\n\n");
             position++;
         }
 
