@@ -80,11 +80,11 @@ public class ResponseBodyParser {
         List<GameDto> gameList = responseBody.getGameList();
 
         if (gameList.isEmpty()) {
-            return "There are no games in list";
+            return "There are no products in list";
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(".!.                   List of games                   .!.\n");
+        sb.append("============== List ==============\n");
         int position = 1;
         for (GameDto game : gameList) {
             GameDto.Price price = game.getPrice();
@@ -97,6 +97,7 @@ public class ResponseBodyParser {
             sb.append("\nCategory: ").append(game.getCategory().toLowerCase()).append("\n\n");
             position++;
         }
+        sb.append("\nTotal pages: ").append(responseBody.getTotalPages());
 
         return sb.toString();
     }

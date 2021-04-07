@@ -67,6 +67,7 @@ public class GameListMenu extends MenuProvider {
             }
         }
 
+        int totalPages = responseBody.getTotalPages();
         if (prevPage != currentPage) {
             ButtonCallbackRequestBuilder prevPageBuilder = new ButtonCallbackRequestBuilder()
                     .addCommand(command.getId())
@@ -79,10 +80,10 @@ public class GameListMenu extends MenuProvider {
             if (userRequest.getFilters() != null) {
                 prevPageBuilder.addFilters(userRequest.getFilterIds());
             }
-            row3.add(new InlineKeyboardButton().setText("Previous page").setCallbackData(prevPageBuilder.buildRequest()));
+            String buttonText = String.format("Previous page %d", prevPage + 1);
+            row3.add(new InlineKeyboardButton().setText(buttonText).setCallbackData(prevPageBuilder.buildRequest()));
         }
 
-        int totalPages = responseBody.getTotalPages();
         int lastPage = totalPages - 1;
         if (currentPage < lastPage) {
             ButtonCallbackRequestBuilder nextPageBuilder = new ButtonCallbackRequestBuilder()
@@ -96,7 +97,8 @@ public class GameListMenu extends MenuProvider {
             if (userRequest.getFilters() != null) {
                 nextPageBuilder.addFilters(userRequest.getFilterIds());
             }
-            row3.add(new InlineKeyboardButton().setText("Next page").setCallbackData(nextPageBuilder.buildRequest()));
+            String buttonText = String.format("Next page %d", nextPage + 1);
+            row3.add(new InlineKeyboardButton().setText(buttonText).setCallbackData(nextPageBuilder.buildRequest()));
         }
         String greetingsCommandCallBack = new ButtonCallbackRequestBuilder().addCommand(3)
                 .addVersion(userRequest.getVersion())
