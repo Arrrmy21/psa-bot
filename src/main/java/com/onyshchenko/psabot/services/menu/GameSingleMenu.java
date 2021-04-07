@@ -16,6 +16,7 @@ import static com.onyshchenko.psabot.models.common.Command.ADDTOWL;
 import static com.onyshchenko.psabot.models.common.Command.CLEARWL;
 import static com.onyshchenko.psabot.models.common.Command.GETGAMES;
 import static com.onyshchenko.psabot.models.common.Command.GETWL;
+import static com.onyshchenko.psabot.models.common.Command.PUBLISHER_GAMES;
 
 public class GameSingleMenu extends MenuProvider {
 
@@ -80,12 +81,12 @@ public class GameSingleMenu extends MenuProvider {
         }
         resultedFilters.add(UserRequest.Filter.PUBLISHER_ID.getFilterId());
         String otherPublisherGamesCallback = new ButtonCallbackRequestBuilder()
-                .addCommand(GETGAMES.getId())
+                .addCommand(PUBLISHER_GAMES.getId())
                 .addCurrentPage(String.valueOf(0))
                 .addPreviousPage(String.valueOf(0))
                 .addVersion(userRequest.getVersion())
                 .addFilters(resultedFilters)
-                .addAdditionalParams(game.getPublisher().getId())
+                .addId(String.valueOf(game.getPublisher().getId()))
                 .buildRequest();
         row3.add(new InlineKeyboardButton().setText("Other games of this publisher")
                 .setCallbackData(otherPublisherGamesCallback));
@@ -105,6 +106,8 @@ public class GameSingleMenu extends MenuProvider {
                 ButtonCallbackRequestBuilder previousPageBuilder = new ButtonCallbackRequestBuilder();
                 if (previousPageDataList[0].equalsIgnoreCase("GG")) {
                     previousPageBuilder.addCommand(GETGAMES.getId());
+                } else if (previousPageDataList[0].equalsIgnoreCase("PG")) {
+                    previousPageBuilder.addCommand(PUBLISHER_GAMES.getId());
                 } else {
                     previousPageBuilder.addCommand(GETWL.getId());
                 }

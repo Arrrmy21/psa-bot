@@ -27,6 +27,7 @@ public enum Command {
     REGULAR_REPLY("regularReply", 11, new MainMenu()),
     CONFIRM("confirm", 12, new ConfirmationMenu()),
     OTHER_PRODUCTS_MENU("otherProductsMenu", 13, new OtherProductsMenu()),
+    PUBLISHER_GAMES("publisherGames", 14, new GameListMenu()),
     HELP("help", 20, new MainMenu());
 
 

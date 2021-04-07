@@ -75,6 +75,7 @@ public class CommandProcessorFactory {
         handler.put(Command.CONFIRM, confirmationProcessor);
         handler.put(Command.OTHER_PRODUCTS_MENU, gamesMenuProcessor);
         handler.put(Command.HELP, helpProcessor);
+        handler.put(Command.PUBLISHER_GAMES, getGamesProcessor);
 
         return handler;
     }

@@ -42,6 +42,8 @@ public class GameListMenu extends MenuProvider {
             current = "GG-" + currentPage;
         } else if (command.equals(Command.SEARCH)) {
             current = "SE-" + currentPage;
+        } else if (command.equals(Command.PUBLISHER_GAMES)) {
+            current = "PG-" + currentPage;
         } else {
             current = "WL-" + currentPage;
         }
@@ -71,6 +73,9 @@ public class GameListMenu extends MenuProvider {
                     .addPreviousPage(String.valueOf(currentPage))
                     .addCurrentPage(String.valueOf(prevPage))
                     .addVersion(userRequest.getVersion());
+            if (command.getId() == Command.PUBLISHER_GAMES.getId()) {
+                prevPageBuilder.addId(userRequest.getIdToPass());
+            }
             if (userRequest.getFilters() != null) {
                 prevPageBuilder.addFilters(userRequest.getFilterIds());
             }
@@ -85,6 +90,9 @@ public class GameListMenu extends MenuProvider {
                     .addCurrentPage(String.valueOf(nextPage))
                     .addPreviousPage(String.valueOf(currentPage))
                     .addVersion(userRequest.getVersion());
+            if (command.getId() == Command.PUBLISHER_GAMES.getId()) {
+                nextPageBuilder.addId(userRequest.getIdToPass());
+            }
             if (userRequest.getFilters() != null) {
                 nextPageBuilder.addFilters(userRequest.getFilterIds());
             }

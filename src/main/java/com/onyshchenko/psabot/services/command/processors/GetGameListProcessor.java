@@ -23,7 +23,7 @@ public class GetGameListProcessor extends CommandProcessor {
         }
         String getGamesUrl = getGamesUrlBuilder.toString();
         if (getGamesUrl.contains("publisherId")) {
-            getGamesUrl = getGamesUrl.replace("%s", preparePublisherId(userRequest.getPreviousPageInfo()));
+            getGamesUrl = getGamesUrl.replace("%s", preparePublisherId(userRequest.getIdToPass()));
         }
         String textFromServer = "";
         try {
@@ -41,9 +41,9 @@ public class GetGameListProcessor extends CommandProcessor {
         return new ServerResponse(StandardResponse.GET_GAMES_RESPONSE, responseBody);
     }
 
-    private String preparePublisherId(String previousPageInfo) {
-        if (previousPageInfo.length() == 1) {
-            return "0" + previousPageInfo;
-        } else return previousPageInfo;
+    private String preparePublisherId(String value) {
+        if (value.length() == 1) {
+            return "0" + value;
+        } else return value;
     }
 }
