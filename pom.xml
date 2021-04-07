@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.onyshchenko</groupId>
     <artifactId>psabot</artifactId>
-    <version>0.4</version>
+    <version>1.0</version>
     <name>psabot</name>
     <description>Java Bot for PSAnalyzer service</description>
 
