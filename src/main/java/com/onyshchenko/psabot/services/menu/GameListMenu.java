@@ -74,7 +74,8 @@ public class GameListMenu extends MenuProvider {
                     .addPreviousPage(String.valueOf(currentPage))
                     .addCurrentPage(String.valueOf(prevPage))
                     .addVersion(userRequest.getVersion());
-            if (command.getId() == Command.PUBLISHER_GAMES.getId()) {
+            if (command.getId() == Command.PUBLISHER_GAMES.getId()
+                    || command.getId() == Command.SEARCH.getId()) {
                 prevPageBuilder.addId(userRequest.getIdToPass());
             }
             if (userRequest.getFilters() != null) {
@@ -91,7 +92,8 @@ public class GameListMenu extends MenuProvider {
                     .addCurrentPage(String.valueOf(nextPage))
                     .addPreviousPage(String.valueOf(currentPage))
                     .addVersion(userRequest.getVersion());
-            if (command.getId() == Command.PUBLISHER_GAMES.getId()) {
+            if (command.getId() == Command.PUBLISHER_GAMES.getId()
+                    || command.getId() == Command.SEARCH.getId()) {
                 nextPageBuilder.addId(userRequest.getIdToPass());
             }
             if (userRequest.getFilters() != null) {
